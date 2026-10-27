@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>苏红朝 · AIGC 个人作品集</title>
+<meta name="description" content="AIGC 视频创作者作品集：AI 提示词设计、分镜预演、AI 素材生成到成片剪辑，全链路可控。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' fill='none' stroke='%239FB5A3' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='5' fill='none' stroke='%23E9E3D6' stroke-width='2'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#0E0D0B;
+  --bg2:#141210;
+  --panel:#1A1816;
+  --line:#29241C;
+  --line-strong:#4A4031;
+  --text:#E9E3D6;
+  --muted:#B8B0A1;
+  --faint:#8A8172;
+  --accent:#9FB5A3;
+  --accent-ink:#0E0D0B;
+  --serif:"Songti SC","Noto Serif SC","STSong","SimSun",Georgia,"Times New Roman",serif;
+  --sans:"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:18px;line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+img,svg,canvas{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+::selection{background:var(--accent);color:var(--accent-ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ===== 顶部导航 ===== */
+.nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;justify-content:space-between;align-items:center;
+  padding:18px 20px;background:linear-gradient(rgba(14,13,11,.95),rgba(14,13,11,0));
+  backdrop-filter:blur(4px);border-bottom:1px solid rgba(41,36,28,.0)}
+.nav-brand{font-family:var(--serif);font-size:20px;letter-spacing:.04em;color:var(--text)}
+.nav-brand .dot{color:var(--accent)}
+.nav-links{display:flex;gap:6px;font-size:15px}
+.nav-links a{color:var(--muted);padding:6px 12px;border-radius:2px;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.on{color:var(--text);font-weight:600}
+
+/* ===== 视图切换 ===== */
+.view{display:none;position:relative;z-index:1}
+.view.active{display:block;animation:viewIn .4s ease both}
+@keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ===== 通用容器 ===== */
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.sec{padding:140px 0 0} /* 增加区块间距 */
+.sec-head{margin-bottom:48px;max-width:760px; border-top: 1px solid var(--line-strong); padding-top: 32px;} 
+.sec-meta{font-size:14px;letter-spacing:.16em;color:var(--accent);margin-bottom:12px;font-weight:500}
+.sec-title{font-family:var(--serif);font-size:clamp(32px,5vw,50px);line-height:1.2;font-weight:600;letter-spacing:.01em}
+.sec-desc{color:var(--muted);margin-top:14px;font-size:17px;max-width: 680px;}
+
+/* ===== 首屏 Hero ===== */
+.hero{max-width:1180px;margin:0 auto;padding:130px 20px 0}
+.hero-meta{font-size:15px;color:var(--muted);letter-spacing:.08em;display:flex;flex-wrap:wrap;gap:8px 18px}
+.hero-meta .who{color:var(--text);font-family:var(--serif);font-weight:600;font-size:17px;}
+.hero-meta .sep{color:var(--faint)}
+
+.hero h1{font-family:var(--serif);font-size:clamp(42px,8.2vw,94px);line-height:1.08;font-weight:600;
+  letter-spacing:-.005em;margin:24px 0 24px;max-width:14em}
+.hero h1 .em{color:var(--accent);font-style:italic}
+
+.hero-sub{color:#D5CEBF;max-width:850px;font-size:22px;margin-bottom:48px;line-height:1.65;}
+.hero-sub strong{color:var(--accent);font-weight:600;white-space:nowrap;font-size:1.1em;}
+
+/* ===== 滚动画廊 (Marquee) ===== */
+.hero-showcase {
+  position: relative; 
+  border: 1px solid var(--line-strong); 
+  background: var(--bg2); 
+  overflow: hidden;
+  aspect-ratio: 16/9;
+}
+.corner{position:absolute;width:16px;height:16px;border:0 solid var(--accent);opacity:.6;pointer-events:none;z-index:10}
+.corner.tl{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.corner.tr{top:-1px;right:-1px;border-top-width:1px;border-right-width:1px}
+.corner.bl{bottom:-1px;left:-1px;border-bottom-width:1px;border-left-width:1px}
+.corner.br{bottom:-1px;right:-1px;border-bottom-width:1px;border-right-width:1px}
+
+/* 使用像素级位移，确保所有浏览器绝对滚动 */
+.marquee-track {
+  display: flex;
+  width: fit-content;
+  height: 100%;
+  animation: scrollX 40s linear infinite;
+  pointer-events: none; 
+}
+.marquee-item {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 16/9;
+  border-right: 1px solid rgba(74, 64, 49, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  overflow: hidden;
+}
+.marquee-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+  transition: opacity 0.3s;
+}
+@keyframes scrollX {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-1920px); } /* 固定像素移动，极其稳定 */
+}
+
+.showcase-foot {
+  position: absolute;
+  left:0;right:0;bottom:0;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:30px 16px 12px;
+  font-size:12px;color:var(--faint);letter-spacing:.08em;
+  background:linear-gradient(transparent,rgba(14,13,11,.9));
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ===== 作品网格 ===== */
+.grid{display:grid;grid-template-columns:1fr;gap:48px 34px}
+.work-card{display:flex;flex-direction:column;gap:20px;background:var(--panel);padding:24px;transition:all .3s;border:1px solid var(--line-strong);box-shadow: 0 4px 20px rgba(0,0,0,0.15);}
+.work-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow: 0 8px 30px rgba(0,0,0,0.4);}
+.work-card .frame{position:relative;border:1px solid var(--line-strong);background:var(--bg2);overflow:hidden;transition:border-color .25s}
+.work-card .frame .ratio{aspect-ratio:16/9;display:grid;place-items:center;color:var(--faint)}
+.work-card .frame .hint{font-size:14px;letter-spacing:.1em;text-align:center;padding:0 20px;line-height:1.6}
+.work-card .frame .hint b{color:var(--text);font-weight:500;letter-spacing:.05em}
+.play{width:64px;height:64px;border:1px solid var(--line-strong);border-radius:50%;display:grid;place-items:center;
+  color:var(--text);background:rgba(14,13,11,.45);transition:all .25s;margin:0 auto 16px;}
+.play svg{width:20px;height:20px}
+.work-card .frame:hover{border-color:var(--accent)}
+.work-card .frame:hover .play{border-color:var(--accent);color:var(--accent);transform:scale(1.05);}
+.work-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px}
+.work-title{font-family:var(--serif);font-size:26px;line-height:1.3;font-weight:600}
+.work-title a{transition:color .2s}
+.work-title a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+.work-meta{font-size:14px;color:var(--accent);letter-spacing:.06em;white-space:nowrap}
+.work-desc{color:var(--muted);font-size:16px;line-height:1.7}
+.work-link{font-size:15px;color:var(--accent);align-self:flex-start;font-weight:500;transition:color .2s;}
+.work-link:hover{color:var(--text);}
+
+/* ===== 经历 ===== */
+.exp{display:flex;flex-direction:column}
+.exp-item{display:grid;gap:5px;padding:28px 0;border-top:1px solid var(--line)}
+.exp-item:last-child{border-bottom:1px solid var(--line)}
+.exp-role{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--text);}
+.exp-date{color:var(--faint);font-size:14px;letter-spacing:.06em;margin-top:2px}
+.exp-note{color:var(--muted);font-size:16px;margin-top:8px;max-width:800px}
+
+/* ===== 技能 ===== */
+.skills{display:grid;grid-template-columns:1fr;gap:40px}
+.skill-group h3{font-size:18px;color:var(--accent);margin-bottom:12px;letter-spacing:.04em;font-weight:600;}
+.skill-group p{color:var(--muted);font-size:16px;line-height:1.8;}
+
+/* ===== 页脚 ===== */
+.footer{margin-top:140px;border-top:1px solid var(--line-strong);background:var(--panel);}
+.footer-inner{max-width:1180px;margin:0 auto;padding:60px 20px 80px}
+.footer h2{font-family:var(--serif);font-size:clamp(28px,4vw,38px);font-weight:600;line-height:1.3;max-width:18em}
+.footer .contact{margin-top:24px;display:flex;flex-direction:column;gap:8px;color:var(--muted);font-size:17px}
+.footer .contact .at{color:var(--accent);font-weight:500;}
+.footer .footnote{margin-top:40px;font-size:14px;color:var(--faint)}
+
+/* ===== 详情页 ===== */
+.detail{max-width:1180px;margin:0 auto;padding:120px 20px 0}
+.back{display:inline-flex;align-items:center;gap:8px;font-size:15px;color:var(--muted);transition:color .2s}
+.back:hover{color:var(--accent)}
+.detail h1{font-family:var(--serif);font-size:clamp(32px,5vw,56px);line-height:1.16;font-weight:600;margin:24px 0 16px}
+.detail-meta{display:flex;flex-wrap:wrap;gap:10px 24px;font-size:14px;color:var(--faint);letter-spacing:.05em}
+.detail-meta .k{color:var(--muted)}
+.detail-meta .v{color:var(--text)}
+.detail-lead{color:var(--muted);font-size:19px;max-width:760px;margin:26px 0 40px;line-height:1.7;}
+
+/* 视频容器 */
+.video-stage{margin:0 0 64px;position:relative;border:1px solid var(--line-strong);background:var(--bg2);overflow:hidden; border-radius: 4px;}
+.video-stage .ratio{aspect-ratio:16/9;display:grid;place-items:center;color:var(--faint)}
+.video-stage iframe { width: 100%; height: 100%; border: none; position: absolute; inset: 0; z-index: 2;}
+
+.dsec{padding:64px 0 0;max-width:900px}
+.dsec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:20px}
+.dsec-num{font-family:var(--serif);color:var(--accent);font-size:16px;font-weight:600;}
+.dsec-title{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:600}
+.dsec-body{color:var(--muted);font-size:17px;line-height:1.8;}
+.dsec-body p+p{margin-top:16px}
+.dsec-body b{color:var(--text);font-weight:600}
+.role-list li{display:flex;gap:16px;padding:16px 0;border-top:1px solid var(--line);font-size:17px;color:var(--muted)}
+.role-list li:last-child{border-bottom:1px solid var(--line)}
+.role-list .n{color:var(--accent);font-family:var(--serif);width:24px;flex:none;font-weight:600;}
+
+/* === 图片网格系统 === */
+.story-grid { display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr); }
+.story-item { position: relative; border: 1px solid var(--line-strong); background: var(--bg2); display: flex; align-items: center; justify-content: center; overflow: hidden; transition: border-color .25s; cursor: pointer; }
+.story-item:hover { border-color: var(--accent); }
+.story-item img { width: 100%; height: 100%; display: block; transition: opacity 0.5s, transform 0.3s; }
+
+/* 横版图 */
+.story-item.landscape { aspect-ratio: 16/9; }
+.story-item.landscape img { object-fit: cover; } 
+
+/* 竖版证书专属 */
+.story-item.cert-item { 
+  aspect-ratio: 16/9; 
+  background: #fff; 
+}
+.story-item.cert-item img { 
+  object-fit: contain; 
+  padding: 4px;
+}
+
+/* 占位框 */
+.story-item.placeholder { aspect-ratio: 16/9; color: var(--faint); font-size: 13px; text-align: center; padding: 10px; cursor: default; }
+
+/* ===== 灯箱（点击看大图） ===== */
+.lightbox {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(10, 9, 8, 0.95); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center; 
+  overflow: hidden;
+  user-select: none;
+}
+.lightbox.active { display: flex; animation: fadeIn .3s ease; }
+.lightbox img { 
+  display: block;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5); 
+  max-width: 95vw; max-height: 95vh;
+  transform-origin: 0 0; 
+  cursor: grab;
+}
+.lightbox img:active { cursor: grabbing; }
+
+.lightbox-close {
+  position: absolute; top: 24px; right: 32px;
+  width: 48px; height: 48px;
+  background: rgba(26, 24, 22, 0.8);
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  color: var(--text); font-size: 24px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s; z-index: 1001;
+}
+.lightbox-close:hover {
+  background: var(--accent); color: var(--accent-ink); border-color: var(--accent);
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* 工作流 */
+.workflow{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--line-strong)}
+.wf-step{padding:24px;border-bottom:1px solid var(--line-strong);background:var(--panel);}
+.wf-step:last-child{border-bottom:none}
+.wf-num{font-family:var(--serif);color:var(--accent);font-size:15px;margin-bottom:10px;display:block;font-weight:600;}
+.wf-name{font-weight:600;font-size:17px;margin-bottom:6px;color:var(--text);}
+.wf-desc{color:var(--muted);font-size:15.5px;line-height:1.6;}
+
+/* ===== 项目跳转导航 ===== */
+.pager{display:grid;gap:16px;margin:80px 0 0;border-top:1px solid var(--line-strong);padding-top:32px}
+.pager.pager-2 { grid-template-columns: 1fr 1fr; }
+.pager.pager-3 { grid-template-columns: 1fr 1fr 1fr; }
+.pager a{border:1px solid var(--line);padding:20px;transition:border-color .25s;background:var(--panel); text-decoration: none;}
+.pager a:hover{border-color:var(--accent)}
+.pager .dir{font-size:12px;color:var(--faint);letter-spacing:.1em;display:block;margin-bottom:8px}
+.pager .t{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--text);}
+.pager a.center { text-align: center; }
+
+/* ===== 关于 ===== */
+.about-cols{display:grid;grid-template-columns:1fr;gap:48px}
+.about-block h3{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:16px;color:var(--text);}
+.about-block p{color:var(--muted);font-size:16px;line-height:1.8;}
+.about-block ul{color:var(--muted);font-size:16px;}
+.about-block li{padding:12px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px}
+.about-block li span{color:var(--faint);font-size:14px;white-space:nowrap}
+
+/* ===== 响应式 ===== */
+@media (min-width:640px){
+  .skills{grid-template-columns:repeat(2,1fr)}
+  .workflow{grid-template-columns:repeat(2,1fr)}
+  .wf-step{border-right:1px solid var(--line-strong)}
+  .wf-step:nth-child(2n){border-right:none}
+  .wf-step:nth-last-child(-n+2){border-bottom:none}
+}
+@media (min-width:900px){
+  .nav{padding:24px 40px}
+  .wrap{padding:0 40px}
+  .grid{grid-template-columns:repeat(6,1fr)}
+  .work-card.featured{grid-column:span 6}
+  .work-card.full{grid-column:span 6}
+  .work-card.half{grid-column:span 3}
+  
+  .about-cols{grid-template-columns:1.2fr 1fr;gap:60px}
+  .workflow{grid-template-columns:repeat(4,1fr)}
+  .wf-step{border-right:1px solid var(--line-strong)}
+  .wf-step:nth-child(2n){border-right:1px solid var(--line-strong)}
+  .wf-step:nth-child(4n){border-right:none}
+  .wf-step:nth-last-child(-n+4){border-bottom:none}
+}
+@media (max-width: 768px) {
+  .story-grid { grid-template-columns: repeat(2, 1fr); }
+  .pager.pager-3 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- 灯箱容器 -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-close" id="lightbox-close">×</div>
+  <img src="" alt="放大预览" id="lightbox-img">
+</div>
+
+<!-- ===================== 顶部导航 ===================== -->
+<nav class="nav">
+  <a class="nav-brand" href="#/home">苏红朝<span class="dot">·</span>作品集</a>
+  <div class="nav-links">
+    <a href="#/home" data-nav="home">作品</a>
+    <a href="#/about" data-nav="about">关于</a>
+    <a href="#/home" data-nav="contact">联系</a>
+  </div>
+</nav>
+
+<!-- ===================== 首页 ===================== -->
+<main id="view-home" class="view">
+  <header class="hero">
+    <div class="hero-meta">
+      <span class="who">苏红朝</span>
+      <span class="sep">/</span>
+      <span>暨南大学 · 广告学</span>
+      <span class="sep">/</span>
+      <span>AIGC 视频创作者</span>
+      <span class="sep">/</span>
+      <span>广州</span>
+    </div>
+    
+    <h1><span class="em">AIGC</span> 个人作品集</h1>
+    
+    <p class="hero-sub">从提示词设计、分镜预演，到 AI 素材生成与成片剪辑，全链路可控。<br>求职方向：<strong>AIGC 视频实习生</strong>。</p>
+
+    <!-- 滚动图片画廊 -->
+    <div class="hero-showcase">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+
+      <div class="marquee-track">
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/ee1d1b615bf7552fd720814e35a0681c.png" alt="作品图1"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/80972ec6b086eaa96f4029c34316c44c.jpg" alt="作品图2"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/f96b4d88ad2d39f62ef117920f091bee.png" alt="作品图3"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/81782f3e26c9c855fdd4789ab30fd92e.jpg" alt="作品图4"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/9c0c3964018e85d338e9eda5a63cd5a2.jpg" alt="作品图5"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/b4135008f55c1cfb3b611b22cf0b6d87.png" alt="作品图6"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/ee1d1b615bf7552fd720814e35a0681c.png" alt="作品图1"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/80972ec6b086eaa96f4029c34316c44c.jpg" alt="作品图2"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/f96b4d88ad2d39f62ef117920f091bee.png" alt="作品图3"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/81782f3e26c9c855fdd4789ab30fd92e.jpg" alt="作品图4"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/9c0c3964018e85d338e9eda5a63cd5a2.jpg" alt="作品图5"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/b4135008f55c1cfb3b611b22cf0b6d87.png" alt="作品图6"></div>
+      </div>
+
+      <div class="showcase-foot">
+        <span>REEL · 代表作预览</span>
+        <span>SELECTED · 2025—2026</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="sec wrap">
+    <div class="sec-head">
+      <div class="sec-meta">Selected Work · 2025 — 至今</div>
+      <h2 class="sec-title">视频作品</h2>
+      <p class="sec-desc">多支 AIGC 短片：团队广告获学院金奖、个人志怪叙事实验，以及视觉与风格探索。点进任一项目，可看到从分镜、提示词到成片的工作流。</p>
+    </div>
+
+    <div class="grid">
+      <!-- 作品 01 -->
+      <article class="work-card featured">
+        <a href="#/project/featured" class="frame" style="display: block; position: relative; text-decoration: none;">
+          <div class="ratio" style="background: url('https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg') center/cover; border-radius: 2px;">
+            <div style="position: absolute; inset: 0; background: linear-gradient(transparent 60%, rgba(14,13,11,0.8));"></div>
+          </div>
+          <div class="foot" style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:30px 16px 12px;font-size:12px;color:#ccc;background:linear-gradient(transparent,rgba(14,13,11,.9)); z-index: 2;">
+            <span>AD · AIGC</span>
+            <span style="color: var(--accent); font-weight: 500;">点击查看项目详情 →</span>
+          </div>
+        </a>
+        
+        <div class="work-head">
+          <h3 class="work-title"><a href="#/project/featured">AIGC创意广告短片-“鳕”战到天涯</a></h3>
+          <span class="work-meta">学院金奖</span>
+        </div>
+        <p class="work-desc">荣获创意星球学院奖金奖。</p>
+        <a class="work-link" href="#/project/featured">查看项目详情 →</a>
+      </article>
+
+      <!-- 作品 02 -->
+      <article class="work-card full">
+        <div class="frame">
+          <a href="#/project/zhiguai" class="ratio" style="display: block; background: url('https://i.imgs.ovh/2026/10/26/bfc984cf9d0480be7ffdbd2d4d8a0530.png') center/cover; text-decoration: none;">
+            <div style="position: absolute; inset: 0; background: linear-gradient(transparent 60%, rgba(14,13,11,0.8));"></div>
+          </a>
+          <div class="foot" style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:30px 16px 12px;font-size:12px;color:var(--faint);background:linear-gradient(transparent,rgba(14,13,11,.8));"><span>NARRATIVE · AIGC</span><span>2026.9.21-2026.9.26</span></div>
+        </div>
+        <div class="work-head">
+          <h3 class="work-title"><a href="#/project/zhiguai">原创中式志怪短片 - 换面</a></h3>
+          <span class="work-meta">2026.9.21-2026.9.26</span>
+        </div>
+        <p class="work-desc">江南有一画师，为得美人面，甘当画中人。</p>
+        <a class="work-link" href="#/project/zhiguai">查看项目详情 →</a>
+      </article>
+
+      <!-- 作品 05 -->
+      <article class="work-card full">
+        <div class="frame">
+          <a href="#/project/yofukashi" class="ratio" style="display: block; background: url('https://i.imgs.ovh/2026/10/27/926de412ebdcdf31187f263e54ef3364.png') center/cover; text-decoration: none;">
+            <div style="position: absolute; inset: 0; background: linear-gradient(transparent 60%, rgba(14,13,11,0.8));"></div>
+          </a>
+          <div class="foot" style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:30px 16px 12px;font-size:12px;color:var(--faint);background:linear-gradient(transparent,rgba(14,13,11,.8));"><span>PV · AIGC</span><span>2025</span></div>
+        </div>
+        <div class="work-head">
+          <h3 class="work-title"><a href="#/project/yofukashi">彻夜之歌真人版PV</a></h3>
+          <span class="work-meta">2025</span>
+        </div>
+        <p class="work-desc">基于动漫《彻夜之歌》的真人版 PV 创作。</p>
+        <a class="work-link" href="#/project/yofukashi">查看项目详情 →</a>
+      </article>
+
+      <!-- 作品 03 -->
+      <article class="work-card half">
+        <div class="frame">
+          <a href="#/project/experiment" class="ratio" style="display: block; background: url('https://i.imgs.ovh/2026/10/27/26f9257cc886fac007423ddaedb8048d.png') center/cover; text-decoration: none;">
+            <div style="position: absolute; inset: 0; background: linear-gradient(transparent 60%, rgba(14,13,11,0.8));"></div>
+          </a>
+          <div class="foot" style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:30px 16px 12px;font-size:12px;color:var(--faint);background:linear-gradient(transparent,rgba(14,13,11,.8));"><span>EXPERIMENT · AIGC</span><span>进行中</span></div>
+        </div>
+        <div class="work-head">
+          <h3 class="work-title"><a href="#/project/experiment">AI动画打斗试验作</a></h3>
+          <span class="work-meta">2026 — 至今</span>
+        </div>
+        <p class="work-desc">基于Seedance2.5、Wan3.0模型AI打斗视频试验品</p>
+        <a class="work-link" href="#/project/experiment">查看项目详情 →</a>
+      </article>
+
+      <!-- 作品 04 -->
+      <article class="work-card half">
+        <div class="frame">
+          <a href="#/project/tvc" class="ratio" style="display: block; background: url('https://i.imgs.ovh/2026/10/27/7de50638b229b7c022455cf58d6e60e7.png') center/cover; text-decoration: none;">
+            <div style="position: absolute; inset: 0; background: linear-gradient(transparent 60%, rgba(14,13,11,0.8));"></div>
+          </a>
+          <div class="foot" style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:30px 16px 12px;font-size:12px;color:var(--faint);background:linear-gradient(transparent,rgba(14,13,11,.8));"><span>ANIMATION · AIGC</span><span>进行中</span></div>
+        </div>
+        <div class="work-head">
+          <h3 class="work-title"><a href="#/project/tvc">AI萌系动画</a></h3>
+          <span class="work-meta">2025.11 — 2025.12</span>
+        </div>
+        <p class="work-desc">咕咕嘎嘎、菲比、Doro、弗糯糯日常</p>
+        <a class="work-link" href="#/project/tvc">查看项目详情 →</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===== 经历 ===== -->
+  <section class="sec wrap">
+    <div class="sec-head">
+      <div class="sec-meta">Experience</div>
+      <h2 class="sec-title">教育背景与项目经历</h2>
+    </div>
+    <div class="exp">
+      <div class="exp-item">
+        <span class="exp-date">2023.09 — 2027.06 · 本科在读</span>
+        <div class="exp-role">暨南大学 · 广告学</div>
+        <p class="exp-note">主修：短视频创意与制作、音视频广告、广告创意思维、电脑图文设计、广告文案写作。参与团队 AIGC 创意广告短片，作品荣获学院金奖。</p>
+      </div>
+      <div class="exp-item">
+        <span class="exp-date">2025.10 — 2025.12 · 团队项目 · 金奖</span>
+        <div class="exp-role">AIGC 创意广告短片</div>
+        <p class="exp-note">负责 AIGC 素材生产、提示词设计迭代、AI 画面修正，配合完成成片剪辑与节奏调整，沉淀适配广告叙事的提示词库。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 技能 ===== -->
+  <section class="sec wrap">
+    <div class="sec-head">
+      <div class="sec-meta">Skills</div>
+      <h2 class="sec-title">专业技能</h2>
+    </div>
+    <div class="skills">
+      <div class="skill-group">
+        <h3>AIGC 工具</h3>
+        <p>熟练使用 Seedance、Libtv、Runninghub、即梦、可灵、ComfyUI；熟悉 AIGC 生产工具流与无限画布工作方式，同步跟进 Sora、Workbuddy 等新工具。</p>
+      </div>
+      <div class="skill-group">
+        <h3>剪辑与设计</h3>
+        <p>剪映、Photoshop、Canva；了解 Illustrator。具备广告脚本策划、分镜绘制、短视频剪辑制作能力。</p>
+      </div>
+      <div class="skill-group">
+        <h3>办公工具</h3>
+        <p>熟练使用 Office 全套（Word / Excel / PowerPoint）进行方案撰写、数据处理与演示制作；熟练使用 WPS、飞书等主流办公协作软件。</p>
+      </div>
+      <div class="skill-group">
+        <h3>内容能力</h3>
+        <p>熟悉抖音、小红书、视频号平台规则，网感强、执行力好；擅长提示词设计优化与 AI 视频素材生成。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 页脚 ===== -->
+  <footer class="footer" id="contact">
+    <div class="footer-inner">
+      <h2>有合适的镜头，<br>也有一整套把事情做完的流程。</h2>
+      <div class="contact">
+        <span>如果你需要一个能把想法做成成片的 AIGC 视频实习生——欢迎直接联系。</span>
+        <span>电话：<span class="at">19210025630</span></span>
+        <span>来信：<a class="at" href="mailto:2642418467@qq.com">2642418467@qq.com</a></span>
+        <span>所在地：广州 · 随时可到岗</span>
+      </div>
+      <div class="footnote">© 2026 苏红朝 · AIGC 视频作品集</div>
+    </div>
+  </footer>
+</main>
+
+<!-- ===================== 详情页 01 ===================== -->
+<main id="view-project-featured" class="view">
+  <div class="detail">
+    <a class="back" href="#/home"><span>←</span> 返回作品</a>
+    <h1>AIGC创意广告短片-“鳕”战到天涯</h1>
+    <div class="detail-meta">
+      <span class="k">类型</span><span class="v">AIGC 广告短片</span>
+      <span class="k">时间</span><span class="v">2025.10 — 2025.12</span>
+      <span class="k">角色</span><span class="v">AIGC 素材生产 · 剪辑配合</span>
+      <span class="k">编号</span><span class="v">Project 01</span>
+    </div>
+    <p class="detail-lead">结合年轻人喜欢的视频风格，运用幽默搞笑的迪士尼动画片风格，围绕“北极擂台战”展开故事叙述，其中，将产品的卖点与动画片中鳕鱼的技能招式结合起来，强化了力诚海洋食品的产品定位以及提升产品在年轻群体中的认知度。而动画的末尾出现的大反转，“遥不可及”、“强大”的鳕鱼从遥远北极降临到你身边，能为“喜欢海味”的消费者提供情绪价值。</p>
+
+    <div class="video-stage" style="margin-bottom: 0;">
+      <div class="ratio story-item landscape" style="background: url('https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg') center/cover; cursor: zoom-in; border: none; border-radius: 0;">
+      </div>
+      <div class="foot"><span>AD · AIGC · 学院金奖</span><span>成片 · 约 45s</span></div>
+    </div>
+    <div style="text-align: center; margin-bottom: 64px; padding-top: 20px;">
+      <a href="https://www.5iidea.com/worksContent/22101" target="_blank" style="
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 12px 24px; background: var(--panel); color: var(--accent);
+        font-weight: 600; font-size: 16px; border-radius: 4px; transition: all 0.2s; text-decoration: none;
+        border: 1px solid var(--accent);
+      " onmouseover="this.style.background='var(--accent)'; this.style.color='var(--accent-ink)';" onmouseout="this.style.background='var(--panel)'; this.style.color='var(--accent)';">
+        ▶ 去创意星球观看完整视频
+      </a>
+      <div style="margin-top: 12px; font-size: 13px; color: var(--faint);">官方获奖页面 · 新标签页打开</div>
+    </div>
+
+    <section class="dsec" style="padding-top: 0;">
+      <div class="dsec-head"><span class="dsec-num">01</span><h2 class="dsec-title">项目背景与挑战</h2></div>
+      <div class="dsec-body"><p>广告学课程中的一次 AIGC 创意实践，团队需在有限周期内产出一支视觉完整、叙事清晰的 AI 广告短片并参赛。核心挑战在于 AI 生成的不稳定性：<b>画面畸变、人物变形、镜头跳转不连贯</b>，提示词难以一次到位，成片风格难以统一。</p></div>
+    </section>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">我的角色</h2></div>
+      <ul class="role-list">
+        <li><span class="n">01</span><span>提示词撰写与迭代优化，沉淀适配广告叙事的提示词库</span></li>
+        <li><span class="n">02</span><span>生成广告核心镜头素材，负责 AI 画面质量控制</span></li>
+        <li><span class="n">03</span><span>调试修正画面畸变、人物变形、镜头跳转不连贯等问题</span></li>
+        <li><span class="n">04</span><span>镜头筛选、素材整合，配合成片剪辑、字幕与画面节奏调整</span></li>
+      </ul>
+    </section>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">03</span><h2 class="dsec-title">素材和分镜</h2></div>
+      <p class="dsec-body" style="margin-bottom:20px">以下为 AI 生成的素材与分镜对应关系（点击可查看大图）。</p>
+      
+      <div class="story-grid">
+        <div class="story-item landscape">
+          <img src="https://i.imgs.ovh/2026/10/26/7fc314652e7f5816fcef8b92d1b9a22c.jpg" loading="lazy" alt="素材大图">
+        </div>
+        <div class="story-item landscape">
+          <img src="https://i.imgs.ovh/2026/10/26/178a39a45d3ffbb7fb037eba37f3cf2e.jpg" loading="lazy" alt="素材2">
+        </div>
+        <div class="story-item landscape">
+          <img src="https://i.imgs.ovh/2026/10/26/1ee1da1fd26bfd1342f1ad752bac0982.jpg" loading="lazy" alt="素材3">
+        </div>
+        <div class="story-item landscape">
+          <img src="https://i.imgs.ovh/2026/10/26/a863cd237f9465d883e1b1e985ed5129.jpg" loading="lazy" alt="素材4">
+        </div>
+        <div class="story-item landscape">
+          <img src="https://picui.ogmua.cn/s1/2026/10/26/6adf3376a42ab.webp" loading="lazy" alt="素材5">
+        </div>
+        <div class="story-item landscape">
+          <img src="https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg" loading="lazy" alt="素材6">
+        </div>
+        <div class="story-item cert-item">
+          <img src="https://picui.ogmua.cn/s1/2026/10/26/6adf3718a771d.webp" loading="lazy" alt="获奖证书">
+        </div>
+      </div>
+    </section>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">04</span><h2 class="dsec-title">成果</h2></div>
+      <div class="dsec-body">
+        <p><b>斩获荣誉：</b>作品凭借幽默搞笑的迪士尼画风、巧妙的技能卖点结合及惊艳的结尾反转，成功荣获学院金奖。</p>
+        <p><b>资产方面：</b>攻克了AI动画生成的连贯性难题，将踩坑经验转化为可复用的“动画风分镜提示词模板”与“角色一致性控制流”，为后续团队制作复杂叙事和夸张动作的AIGC短片提供了标准化指导。</p>
+      </div>
+    </section>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">05</span><h2 class="dsec-title">复盘</h2></div>
+      <div class="dsec-body">
+        <p><b>1. 自我成长方向：从“盲盒抽卡”到“精准掌控”</b></p>
+        <p><b>对AI视频与提示词理解的加深：</b>2025年刚接触AI时，那时模型不如现在智能，早期做这个项目时，我们团队一开始在只有“人物板”和“场景板”，而没有“分镜图”的情况下直接让AI生成视频。结果就是AI生成的视频经常出现动作失控、人物站位不符合预期、画风跑偏、画面畸变的问题，提示词就像“开盲盒”，往往要经过多次抽卡才能得到勉强能用的画面。</p>
+        <p><b>分镜图的重要性与初步破局：</b>后来经过团队成员一齐学习AI视频生成逻辑和充分的沟通，我们意识到，AI需要明确的“空间关系”。于是我们开始用少量的积分来生成关键的分镜图（Storyboard），通过先锁定人物站位、空间关系和景别（如全景交代擂台、特写鳕鱼放技能），再喂给AI，才初步解决了动作不连贯和畸变问题。于是我们明白了提示词是翻译器，而分镜图才是AI视频的“施工图纸”。</p>
+        <p>对比25年到当前的AI模型变化，各大视频模型对复杂指令和长镜头的理解力有了质的飞跃。我也从中学习到了，面对飞速迭代的AI工具，<b>创意拆解能力和视听语言基础（如机位、运镜）才是无法被取代的核心壁垒。</b></p>
+        
+        <p style="margin-top:24px;"><b>2. 团队合作的方向：从“各自为战”到“全局对齐”</b></p>
+        <p><b>素材冲突的调整：</b>作为团队项目，在各自生成素材时，不可避免地遇到了不同成员产出的视频在分镜逻辑、角色一致性（如鳕鱼的造型细节）、甚至画风质感上产生冲突。调整方法上，经过沟通和分工，最终由我进行了统一的素材生成：画风图、角色板、场景板，部分关键分镜，初步解决了视频素材的各种冲突问题。</p>
+        <p><b>沟通与协作认知：</b>针对风格和分镜的冲突，我们意识到前置沟通的重要性。不能等大家各自生成完再去拼接，而是在提示词设计阶段就统一标准：先生成一套统一的模板，涵盖画风要求、人物站位要求、负面提示词要求，然后生成所需的剧情时再把模板喂给AI来生成一套相对统一的提示词。并且团队间的视频素材衔接时会有突兀问题，因此我们引入了章鱼主持人来作为各个素材间的过场，衔接问题得到初步结局。</p>
+        <p>这份项目经验让我深刻体会到，AIGC时代的团队协作，既需要统一“美术标准”，又需要大家在素材筛选与成片节奏上提前达成共识，<b>全局观比单打独斗更重要。</b></p>
+      </div>
+    </section>
+
+    <nav class="pager pager-2">
+      <a href="#/project/zhiguai"><span class="dir">下一个项目</span><span class="t">原创中式志怪短片 - 换面 →</span></a>
+      <a href="#/home" class="center"><span class="dir">返回</span><span class="t">回到作品首页</span></a>
+    </nav>
+  </div>
+</main>
+
+<!-- ===================== 详情页 02 ===================== -->
+<main id="view-project-zhiguai" class="view">
+  <div class="detail">
+    <a class="back" href="#/home"><span>←</span> 返回作品</a>
+    <h1>原创中式志怪短片 - 换面</h1>
+    <div class="detail-meta">
+      <span class="k">类型</span><span class="v">叙事实验 · AIGC</span>
+      <span class="k">时间</span><span class="v">2026.9.21 — 2026.9.26</span>
+      <span class="k">角色</span><span class="v">分镜 · 提示词 · 生成</span>
+      <span class="k">编号</span><span class="v">Project 02</span>
+    </div>
+    <p class="detail-lead">江南有个落魄画师，为求一张绝美的“美人面”，深夜与叩门的青衫老妪做了一笔交易。可老妪拿出的，是一张带着冰裂纹的人皮面具……<br><br>“你若肯替她死，这面便是你的。”<br><br>他不想死，他想逃，可老妪仿佛有某种魔力，将他的双腿死死锁在原地。他只能绝望地看着那张人皮面具离他越来越近，最终死死贴上了他的脸……<br><br>当他再次睁眼，自己竟成了一幅挂在墙上的画。而病愈的柳家小姐，正顶着他那张男人的脸，对镜梳妆，咧嘴笑问：“这画师的脸，倒比原先的还白净些……”<br><br>墙上的画里，一滴浓黑的墨泪，悄无声息地淌了下来。</p>
+
+    <div class="video-stage">
+      <div class="ratio">
+        <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=117511278299105&bvid=BV1CAxK6REqQ&cid=43091100626&p=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+      </div>
+    </div>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">01</span><h2 class="dsec-title">项目背景</h2></div>
+      <div class="dsec-body"><p>基于对中国古典志怪美学的兴趣，尝试用AIGC建立一套影调统一的分镜级短片，探索如何用AI生成“主观POV压迫感”、“鱼眼畸变”、“换脸特效”等镜头来渲染志怪短片的惊悚感、诡异感。</p></div>
+    </section>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">要解决的问题</h2></div>
+      <div class="dsec-body">
+        <p>志怪题材对氛围与一致性要求极高：多镜头之间如何保持统一画风、稳定光影与人物形象，避免 AI 生成常见的跳脱与割裂。</p>
+        <p>尽管通过人物板、场景板、分镜图、统一提示词对视频模型进行了约束，但AI生成的某些画面仍然存在场景不统一、画风不统一、不跟分镜图、提示词走的情况。经过反思，也许是AI生成的场景图本身质量不高，以及AI对空间关系理解不到位的原因，某些场景错乱了；以及成本所限，抽卡次数不足的原因。</p>
+      </div>
+    </section>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">03</span><h2 class="dsec-title">我的角色</h2></div>
+      <ul class="role-list">
+        <li><span class="n">01</span><span>本短片全程独立完成，耗时5天左右，涵盖了选题、世界观设计、剧本创作、分镜设计、场景设计、人物设计、素材生成、分镜图生成、提示词优化、成品剪辑的全流程。</span></li>
+        <li><span class="n">02</span><span>确定了“干冷、死寂、诡异”的暗黑志怪美学风格，规划了从“落魄画师”到“被夺舍后的绝望”的完整情绪起伏。分镜设计方面，在“致命蛊惑”段落，利用“过肩镜头”到“POV 极低仰角鱼眼推进”的机位变化，制造强烈的心理压迫感。</span></li>
+        <li><span class="n">03</span><span>提示词设计：提炼了一套核心提示词公式。通过加入 dry and cold environment（干冷环境）、strong fisheye lens distortion（强鱼眼畸变）等指令，锁定了极具压抑感的中式志怪视觉；并通过对“冰裂纹面皮”、“滴落墨泪”的微观描述，提升了画面的质感。</span></li>
+        <li><span class="n">04</span><span>部分素材和分镜图展示</span></li>
+      </ul>
+    </section>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">04</span><h2 class="dsec-title">分镜与关键帧</h2></div>
+      <p class="dsec-body" style="margin-bottom:20px">人物设定板与场景氛围参考图，展示从分镜到成片的对应关系（点击可查看大图）。</p>
+      
+      <div class="story-grid">
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/ee1d1b615bf7552fd720814e35a0681c.png" loading="lazy" alt="人物设定1"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/80972ec6b086eaa96f4029c34316c44c.jpg" loading="lazy" alt="人物设定2"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/f96b4d88ad2d39f62ef117920f091bee.png" loading="lazy" alt="人物设定3"></div>
+        
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/81782f3e26c9c855fdd4789ab30fd92e.jpg" loading="lazy" alt="场景1"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/9c0c3964018e85d338e9eda5a63cd5a2.jpg" loading="lazy" alt="场景2"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/b4135008f55c1cfb3b611b22cf0b6d87.png" loading="lazy" alt="场景3"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/bfc984cf9d0480be7ffdbd2d4d8a0530.png" loading="lazy" alt="场景4"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/8af181849aa10a2163a6ce6b25462804.png" loading="lazy" alt="场景5"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/499dbc8a45a73e41df84a11993eeaa49.png" loading="lazy" alt="场景6"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/47d8a27fff94c6eb767b77e81d02644c.png" loading="lazy" alt="场景7"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/fd0457aea4c751646888f95d0fd3918c.jpg" loading="lazy" alt="场景8"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/3fc3afee4ba29c5b4f8c54a470efb8aa.png" loading="lazy" alt="场景9"></div>
+      </div>
+    </section>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">05</span><h2 class="dsec-title">成果与复盘</h2></div>
+      <div class="dsec-body">
+        <p><b>【项目成果】</b><br>在5天的独立制作周期内，成功跑通了“剧本-分镜-场景-人物-生图-生视频-剪辑”的全 AIGC 闭环，产出了一支极具“干冷、死寂、诡异”暗黑美学的一分钟志怪短片。<br>特别是在“致命蛊惑”等核心段落，成功实现了从“过肩客观镜头”到“POV极低仰角鱼眼”的极限推镜调度，将心理压迫感视觉化；并通过精准的 dry and cold、fisheye distortion 等提示词公式，以及“冰裂纹面皮”、“滴落墨泪”的微观细节，极大提升了中式恐怖画面的质感与惊悚度。</p>
+        <p><b>【问题复盘与反思】</b><br>尽管前期通过人物板、场景板、分镜图和负向提示词进行了严苛的约束，但在最终成片里，AI 依然出现了部分场景错乱、画风割裂及“不跟分镜图走”的失控现象。经过复盘，核心痛点与原因如下：</p>
+        <ul class="role-list" style="border-top:none; padding-top:0;">
+          <li><span class="n">1</span><span><b>空间理解壁垒：</b>AI 视频模型对复杂的物理空间关系（如极其微弱的门缝内外的透视、手部与面皮的交互）理解不到位，导致某些复杂机位下场景错乱。</span></li>
+          <li><span class="n">2</span><span><b>底图质量决定上限：</b>部分场景图本身的 AI 生成质量存在细微透视错误，导致在跑视频时被进一步放大。</span></li>
+          <li><span class="n">3</span><span><b>成本与抽卡率的妥协：</b>受限于算力成本，局部镜头的“抽卡”次数不足，未能通过海量生成来筛选出绝对完美的一致性画面。</span></li>
+        </ul>
+        <p style="margin-top:16px;"><b>【经验总结】</b><br>未来的 AI 短片制作中，需要将更多精力前置到“高精度分镜图与空间锚点”的把控上；同时，在有限的成本内，必须把最核心的算力和抽卡次数留给决定剧情的“情绪高潮镜头”。</p>
+      </div>
+    </section>
+
+    <nav class="pager pager-3">
+      <a href="#/project/featured"><span class="dir">上一个项目</span><span class="t">← AIGC 创意广告短片</span></a>
+      <a href="#/home" class="center"><span class="dir">返回</span><span class="t">回到作品首页</span></a>
+      <a href="#/project/yofukashi"><span class="dir">下一个项目</span><span class="t">彻夜之歌真人版PV →</span></a>
+    </nav>
+  </div>
+</main>
+
+<!-- ===================== 详情页 05：彻夜之歌 ===================== -->
+<main id="view-project-yofukashi" class="view">
+  <div class="detail">
+    <a class="back" href="#/home"><span>←</span> 返回作品</a>
+    <h1>彻夜之歌真人版PV</h1>
+    <div class="detail-meta">
+      <span class="k">类型</span><span class="v">PV / 二创</span>
+      <span class="k">时间</span><span class="v">2025</span>
+      <span class="k">角色</span><span class="v">独立创作</span>
+      <span class="k">编号</span><span class="v">Project 05</span>
+    </div>
+    <p class="detail-lead">基于动漫《彻夜之歌》的真人版 PV 创作。</p>
+
+    <div class="video-stage">
+      <div class="ratio">
+        <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=117511278299489&bvid=BV1CAxK6REGv&cid=43091035056&p=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+      </div>
+    </div>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">01</span><h2 class="dsec-title">项目背景</h2></div>
+      <div class="dsec-body"><p>短视频创意制作课程作业，基于当时非常喜爱的一部番剧《彻夜之歌》PV内容的真人版二创。</p></div>
+    </section>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">工作流截图</h2></div>
+      <div class="story-grid" style="grid-template-columns: 1fr;">
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/9bc93740192a58aa51b5a4ff066299c8.png" loading="lazy" alt="工作流截图"></div>
+      </div>
+    </section>
+
+    <nav class="pager pager-3">
+      <a href="#/project/zhiguai"><span class="dir">上一个项目</span><span class="t">← 原创中式志怪短片</span></a>
+      <a href="#/home" class="center"><span class="dir">返回</span><span class="t">回到作品首页</span></a>
+      <a href="#/project/experiment"><span class="dir">下一个项目</span><span class="t">AI动画打斗试验作 →</span></a>
+    </nav>
+  </div>
+</main>
+
+<!-- ===================== 详情页 03：AI动画打斗试验作 ===================== -->
+<main id="view-project-experiment" class="view">
+  <div class="detail">
+    <a class="back" href="#/home"><span>←</span> 返回作品</a>
+    <h1>AI动画打斗试验作</h1>
+    <div class="detail-meta">
+      <span class="k">类型</span><span class="v">实验影像 · 打斗</span>
+      <span class="k">时间</span><span class="v">2026 — 至今</span>
+      <span class="k">角色</span><span class="v">独立创作</span>
+      <span class="k">编号</span><span class="v">Project 03</span>
+    </div>
+    <p class="detail-lead">Wan3.0模型AI打斗视频试验品。</p>
+
+    <div class="video-stage">
+      <div class="ratio">
+        <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=117511345408788&bvid=BV12oxN6fE5W&cid=43091363862&p=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+      </div>
+    </div>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">01</span><h2 class="dsec-title">项目背景</h2></div>
+      <div class="dsec-body"><p>基于Seedance2.5、wan3.0，因对Re0原作的打斗演出效果不满意，于是自己动手尝试制作，并且试验Seedance性能。</p></div>
+    </section>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">工作流截图</h2></div>
+      <div class="story-grid">
+        <div class="story-item landscape" style="grid-column: span 3; aspect-ratio: 21/9;">
+          <img src="https://picui.ogmua.cn/s1/2026/10/26/6adf3712e5327.webp" loading="lazy" alt="工作流截图">
+        </div>
+      </div>
+    </section>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">03</span><h2 class="dsec-title">复盘</h2></div>
+      <div class="dsec-body">
+        <p>使用人物板+场景板+故事板的方式制作，但最后发现故事板对AI本身约束过于强大，导致很多画面反而达不到预期，没能激发Seedance2.5的全部潜能，后因成本问题，部分视频画面使用Wan3.0生成代替，导致最终视频成品效果部分画面存在画风割裂、人物混乱、动作不流畅、穿模等问题。</p>
+      </div>
+    </section>
+
+    <nav class="pager pager-3">
+      <a href="#/project/yofukashi"><span class="dir">上一个项目</span><span class="t">← 彻夜之歌真人版PV</span></a>
+      <a href="#/home" class="center"><span class="dir">返回</span><span class="t">回到作品首页</span></a>
+      <a href="#/project/tvc"><span class="dir">下一个项目</span><span class="t">AI萌系动画 →</span></a>
+    </nav>
+  </div>
+</main>
+
+<!-- ===================== 详情页 04：AI萌系动画 ===================== -->
+<main id="view-project-tvc" class="view">
+  <div class="detail">
+    <a class="back" href="#/home"><span>←</span> 返回作品</a>
+    <h1>AI萌系动画</h1>
+    <div class="detail-meta">
+      <span class="k">类型</span><span class="v">日常动画</span>
+      <span class="k">时间</span><span class="v">2025.11 — 2025.12</span>
+      <span class="k">角色</span><span class="v">独立创作</span>
+      <span class="k">编号</span><span class="v">Project 04</span>
+    </div>
+    <p class="detail-lead">咕咕嘎嘎、菲比、Doro、弗糯糯日常。</p>
+
+    <div class="video-stage">
+      <div class="ratio">
+        <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=117511345408889&bvid=BV12oxN6fEVq&cid=43091429156&p=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+      </div>
+    </div>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">01</span><h2 class="dsec-title">项目背景</h2></div>
+      <div class="dsec-body"><p>此处可补充你创作这四个日常小动画的背景与灵感。</p></div>
+    </section>
+
+    <section class="dsec">
+      <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">工作流与视频展示</h2></div>
+      <div class="story-grid">
+        <div class="story-item landscape">
+          <img src="https://picui.ogmua.cn/s1/2026/10/26/6adf371304a49.webp" loading="lazy" alt="工作流截图">
+        </div>
+        <div class="story-item landscape placeholder"><span>咕咕嘎嘎 视频占位</span></div>
+        <div class="story-item landscape placeholder"><span>菲比 视频占位</span></div>
+        <div class="story-item landscape placeholder"><span>Doro 视频占位</span></div>
+        <div class="story-item landscape placeholder"><span>弗糯糯 视频占位</span></div>
+      </div>
+    </section>
+
+    <nav class="pager pager-2">
+      <a href="#/project/experiment"><span class="dir">上一个项目</span><span class="t">← AI动画打斗试验作</span></a>
+      <a href="#/home" class="center"><span class="dir">返回</span><span class="t">回到作品首页</span></a>
+    </nav>
+  </div>
+</main>
+
+<!-- ===================== 关于页 ===================== -->
+<main id="view-about" class="view">
+  <div class="detail">
+    <a class="back" href="#/home"><span>←</span> 返回作品</a>
+    <h1>关于我</h1>
+    <p class="detail-lead" style="max-width:760px;margin-bottom:12px">广告学在读，拥有 AIGC 广告短片获奖项目经验。熟练使用 Seedance、Libtv、可灵、ComfyUI 等多款 AI 视频工具，熟悉 AIGC 工具流与无限画布工作流，擅长提示词设计优化与 AI 视频素材生成，具备短视频剪辑配合落地经验；熟练掌握全套办公软件。</p>
+    <p class="detail-lead" style="max-width:760px;margin-top:0">愿意持续学习 AIGC 新工具与新玩法，能够独立配合完成视频素材生成、剪辑包装等工作。</p>
+
+    <section class="dsec" style="max-width:none">
+      <div class="about-cols">
+        <div>
+          <div class="about-block">
+            <h3>我的方法</h3>
+            <p>相信提示词是创意向影像的翻译器：先建立统一的视觉系统与画风约束，再逐镜头生成与修正，最后用剪辑完成叙事。把「AI 产出的不确定性」转化成「可迭代、可复用的流程」。</p>
+          </div>
+          <div class="about-block" style="margin-top:26px">
+            <h3>工作流</h3>
+            <p>创意与分镜 → 提示词设计 → AI 素材生成 → 镜头筛选整合 → 成片剪辑与节奏。AIGC 生产工具流 + 无限画布工作方式，同步跟进 Sora、Workbuddy 等新工具。</p>
+          </div>
+        </div>
+        <div>
+          <div class="about-block">
+            <h3>教育背景</h3>
+            <ul>
+              <li><span>暨南大学 · 广告学</span><span>2023 — 2027</span></li>
+              <li><span>学院金奖 · AIGC 广告短片</span><span>2025</span></li>
+            </ul>
+          </div>
+          <div class="about-block" style="margin-top:26px">
+            <h3>技能</h3>
+            <ul>
+              <li><span>AIGC 工具</span><span>Seedance / 可灵 / ComfyUI…</span></li>
+              <li><span>剪辑设计</span><span>剪映 / Photoshop / Canva</span></li>
+              <li><span>办公工具</span><span>Office 全套 / WPS / 飞书</span></li>
+            </ul>
+          </div>
+          <div class="about-block" style="margin-top:26px">
+            <h3>联系</h3>
+            <ul>
+              <li><span>所在地</span><span>广州</span></li>
+              <li><span>电话</span><span>19210025630</span></li>
+              <li><span>邮箱</span><span>2642418467@qq.com</span></li>
+              <li><span>作品集</span><span>石墨文档链接</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+(function(){
+  function resolveRoute(){
+    const hash = location.hash || '#/home';
+    if (hash.indexOf('#/project/') === 0) {
+      return 'project-' + hash.split('/')[2];
+    }
+    if (hash === '#/about') return 'about';
+    return 'home';
+  }
+  function route(){
+    const id = resolveRoute();
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+    var el = document.getElementById('view-' + id);
+    if (el){ el.classList.add('active'); }
+    window.scrollTo(0, 0);
+    document.querySelectorAll('.nav-links a').forEach(function(a){
+      var key = a.getAttribute('data-nav');
+      var on = false;
+      if (key === 'about') on = (id === 'about');
+      else if (key === 'home') on = (id !== 'about' && id.indexOf('project') !== 0);
+      a.classList.toggle('on', on);
+    });
+  }
+  window.addEventListener('hashchange', route);
+
+  var contactLink = document.querySelector('.nav-links a[data-nav="contact"]');
+  if (contactLink) {
+    contactLink.addEventListener('click', function(){
+      setTimeout(function(){
+        var f = document.getElementById('contact');
+        if (f){ f.scrollIntoView({behavior:'smooth', block:'start'}); }
+      }, 80);
+    });
+  }
+
+  route();
+
+  // ===== 增强版灯箱功能 =====
+  var lightbox = document.getElementById('lightbox');
+  var lightboxImg = document.getElementById('lightbox-img');
+  var lightboxClose = document.getElementById('lightbox-close');
+  
+  var scale = 1;
+  var translateX = 0;
+  var translateY = 0;
+  var isDragging = false;
+  var startX = 0;
+  var startY = 0;
+
+  document.querySelectorAll('.story-item img, .story-item.landscape[style*="url"]').forEach(function(target) {
+    target.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var imgUrl = this.tagName === 'IMG' ? this.src : this.style.backgroundImage.slice(5, -2);
+      lightboxImg.src = imgUrl;
+      scale = 1; translateX = 0; translateY = 0;
+      updateTransform();
+      lightbox.classList.add('active');
+    });
+  });
+
+  function updateTransform() {
+    lightboxImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    setTimeout(() => { lightboxImg.src = ''; }, 300);
+  }
+
+  lightboxClose.addEventListener('click', closeLightbox);
+
+  window.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && lightbox.classList.contains('active')) closeLightbox();
+  });
+
+  lightbox.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    if (e.deltaY < 0) { scale *= 1.15; } else { scale /= 1.15; }
+    if (scale < 0.2) scale = 0.2; 
+    updateTransform();
+  }, { passive: false });
+
+  lightboxImg.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    isDragging = true;
+    startX = e.clientX - translateX;
+    startY = e.clientY - translateY;
+    lightboxImg.style.cursor = 'grabbing';
+  });
+
+  window.addEventListener('mousemove', function(e) {
+    if (isDragging) {
+      translateX = e.clientX - startX;
+      translateY = e.clientY - startY;
+      updateTransform();
+    }
+  });
+
+  window.addEventListener('mouseup', function() {
+    if (isDragging) {
+      isDragging = false;
+      lightboxImg.style.cursor = 'grab';
+    }
+  });
+})();
+</script>
+</body>
+</html>
