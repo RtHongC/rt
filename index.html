@@ -50,8 +50,15 @@ ul,ol{list-style:none}
 
 /* ===== 通用容器 ===== */
 .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
-.sec{padding:140px 0 0} /* 增加区块间距 */
-.sec-head{margin-bottom:48px;max-width:760px; border-top: 1px solid var(--line-strong); padding-top: 32px;} 
+.sec{padding:160px 0 0}
+
+/* === 分割线 === */
+.sec-head{
+  margin-bottom: 56px;
+  max-width: 760px; 
+  padding-top: 40px; 
+  border-top: 1px solid var(--line-strong); 
+}
 .sec-meta{font-size:14px;letter-spacing:.16em;color:var(--accent);margin-bottom:12px;font-weight:500}
 .sec-title{font-family:var(--serif);font-size:clamp(32px,5vw,50px);line-height:1.2;font-weight:600;letter-spacing:.01em}
 .sec-desc{color:var(--muted);margin-top:14px;font-size:17px;max-width: 680px;}
@@ -83,7 +90,6 @@ ul,ol{list-style:none}
 .corner.bl{bottom:-1px;left:-1px;border-bottom-width:1px;border-left-width:1px}
 .corner.br{bottom:-1px;right:-1px;border-bottom-width:1px;border-right-width:1px}
 
-/* 使用像素级位移，确保所有浏览器绝对滚动 */
 .marquee-track {
   display: flex;
   width: fit-content;
@@ -111,7 +117,7 @@ ul,ol{list-style:none}
 }
 @keyframes scrollX {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-1920px); } /* 固定像素移动，极其稳定 */
+  100% { transform: translateX(-3840px); } 
 }
 
 .showcase-foot {
@@ -161,7 +167,7 @@ ul,ol{list-style:none}
 .skill-group p{color:var(--muted);font-size:16px;line-height:1.8;}
 
 /* ===== 页脚 ===== */
-.footer{margin-top:140px;border-top:1px solid var(--line-strong);background:var(--panel);}
+.footer{margin-top:160px;border-top:1px solid var(--line-strong);background:var(--panel);}
 .footer-inner{max-width:1180px;margin:0 auto;padding:60px 20px 80px}
 .footer h2{font-family:var(--serif);font-size:clamp(28px,4vw,38px);font-weight:600;line-height:1.3;max-width:18em}
 .footer .contact{margin-top:24px;display:flex;flex-direction:column;gap:8px;color:var(--muted);font-size:17px}
@@ -181,7 +187,7 @@ ul,ol{list-style:none}
 /* 视频容器 */
 .video-stage{margin:0 0 64px;position:relative;border:1px solid var(--line-strong);background:var(--bg2);overflow:hidden; border-radius: 4px;}
 .video-stage .ratio{aspect-ratio:16/9;display:grid;place-items:center;color:var(--faint)}
-.video-stage iframe { width: 100%; height: 100%; border: none; position: absolute; inset: 0; z-index: 2;}
+.video-stage video { width: 100%; height: 100%; position: absolute; inset: 0; background: #000; object-fit: contain; outline: none; }
 
 .dsec{padding:64px 0 0;max-width:900px}
 .dsec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:20px}
@@ -347,18 +353,37 @@ ul,ol{list-style:none}
       <div class="corner bl"></div><div class="corner br"></div>
 
       <div class="marquee-track">
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/ee1d1b615bf7552fd720814e35a0681c.png" alt="作品图1"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/80972ec6b086eaa96f4029c34316c44c.jpg" alt="作品图2"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/f96b4d88ad2d39f62ef117920f091bee.png" alt="作品图3"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/81782f3e26c9c855fdd4789ab30fd92e.jpg" alt="作品图4"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/9c0c3964018e85d338e9eda5a63cd5a2.jpg" alt="作品图5"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/b4135008f55c1cfb3b611b22cf0b6d87.png" alt="作品图6"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/ee1d1b615bf7552fd720814e35a0681c.png" alt="作品图1"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/80972ec6b086eaa96f4029c34316c44c.jpg" alt="作品图2"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/f96b4d88ad2d39f62ef117920f091bee.png" alt="作品图3"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/81782f3e26c9c855fdd4789ab30fd92e.jpg" alt="作品图4"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/9c0c3964018e85d338e9eda5a63cd5a2.jpg" alt="作品图5"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/26/b4135008f55c1cfb3b611b22cf0b6d87.png" alt="作品图6"></div>
+        <!-- 第一组 -->
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg" alt="作品1"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a19c16eff120d1f812814a65e1825620.jpg" alt="作品2"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a1ed02874ad76d91a8fdb42290a04b6e.png" alt="作品3"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/f48d99c04a47870a9771838c2fed9ba5.jpg" alt="作品4"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c2500e60c6b3a04204ad8cbdf5f926a1.png" alt="作品5"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/546eb2b8076bf760289419a69e1111a9.png" alt="作品6"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/31260906695efaf8c67e6b3efa840445.png" alt="作品7"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/2f279275cce32f23b65170b841f81e71.png" alt="作品8"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/91a39e4c5bcb6529a1782706a9f71603.png" alt="作品9"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/674cc7d1a9c9887efb00111fa3c41267.png" alt="作品10"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/885466ff658baca9a6f86defde5cacce.png" alt="作品11"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/8ae7e2326619f84ac47498a7b9ec490b.png" alt="作品12"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/1bba2625e5789f38b20127d265621380.png" alt="作品13"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c407331f64ddc2b0dd2050504e29e47f.png" alt="作品14"></div>
+
+        <!-- 第二组（用于无缝循环） -->
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg" alt="作品1"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a19c16eff120d1f812814a65e1825620.jpg" alt="作品2"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a1ed02874ad76d91a8fdb42290a04b6e.png" alt="作品3"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/f48d99c04a47870a9771838c2fed9ba5.jpg" alt="作品4"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c2500e60c6b3a04204ad8cbdf5f926a1.png" alt="作品5"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/546eb2b8076bf760289419a69e1111a9.png" alt="作品6"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/31260906695efaf8c67e6b3efa840445.png" alt="作品7"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/2f279275cce32f23b65170b841f81e71.png" alt="作品8"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/91a39e4c5bcb6529a1782706a9f71603.png" alt="作品9"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/674cc7d1a9c9887efb00111fa3c41267.png" alt="作品10"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/885466ff658baca9a6f86defde5cacce.png" alt="作品11"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/8ae7e2326619f84ac47498a7b9ec490b.png" alt="作品12"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/1bba2625e5789f38b20127d265621380.png" alt="作品13"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c407331f64ddc2b0dd2050504e29e47f.png" alt="作品14"></div>
       </div>
 
       <div class="showcase-foot">
@@ -368,11 +393,11 @@ ul,ol{list-style:none}
     </div>
   </header>
 
+  <!-- 视频作品区 -->
   <section class="sec wrap">
     <div class="sec-head">
       <div class="sec-meta">Selected Work · 2025 — 至今</div>
       <h2 class="sec-title">视频作品</h2>
-      <p class="sec-desc">多支 AIGC 短片：团队广告获学院金奖、个人志怪叙事实验，以及视觉与风格探索。点进任一项目，可看到从分镜、提示词到成片的工作流。</p>
     </div>
 
     <div class="grid">
@@ -421,10 +446,10 @@ ul,ol{list-style:none}
           <div class="foot" style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:30px 16px 12px;font-size:12px;color:var(--faint);background:linear-gradient(transparent,rgba(14,13,11,.8));"><span>PV · AIGC</span><span>2025</span></div>
         </div>
         <div class="work-head">
-          <h3 class="work-title"><a href="#/project/yofukashi">彻夜之歌真人版PV</a></h3>
+          <h3 class="work-title"><a href="#/project/yofukashi">彻夜之歌CG版PV</a></h3>
           <span class="work-meta">2025</span>
         </div>
-        <p class="work-desc">基于动漫《彻夜之歌》的真人版 PV 创作。</p>
+        <p class="work-desc">基于动漫《彻夜之歌》的 CG 版 PV 创作。</p>
         <a class="work-link" href="#/project/yofukashi">查看项目详情 →</a>
       </article>
 
@@ -509,7 +534,7 @@ ul,ol{list-style:none}
     </div>
   </section>
 
-  <!-- ===== 页脚 ===== -->
+  <!-- ===== 页脚（已删除作品集链接） ===== -->
   <footer class="footer" id="contact">
     <div class="footer-inner">
       <h2>有合适的镜头，<br>也有一整套把事情做完的流程。</h2>
@@ -643,7 +668,9 @@ ul,ol{list-style:none}
 
     <div class="video-stage">
       <div class="ratio">
-        <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=117511278299105&bvid=BV1CAxK6REqQ&cid=43091100626&p=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        <video controls>
+          <source src="https://1518216049.vod-qcloud.com/9c54cdefvodtranscq1518216049/e8ac7fad5001834825772885825/v.f100800.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
 
@@ -708,33 +735,35 @@ ul,ol{list-style:none}
     <nav class="pager pager-3">
       <a href="#/project/featured"><span class="dir">上一个项目</span><span class="t">← AIGC 创意广告短片</span></a>
       <a href="#/home" class="center"><span class="dir">返回</span><span class="t">回到作品首页</span></a>
-      <a href="#/project/yofukashi"><span class="dir">下一个项目</span><span class="t">彻夜之歌真人版PV →</span></a>
+      <a href="#/project/yofukashi"><span class="dir">下一个项目</span><span class="t">彻夜之歌CG版PV →</span></a>
     </nav>
   </div>
 </main>
 
-<!-- ===================== 详情页 05：彻夜之歌 ===================== -->
+<!-- ===================== 详情页 05：彻夜之歌CG版 ===================== -->
 <main id="view-project-yofukashi" class="view">
   <div class="detail">
     <a class="back" href="#/home"><span>←</span> 返回作品</a>
-    <h1>彻夜之歌真人版PV</h1>
+    <h1>彻夜之歌CG版PV</h1>
     <div class="detail-meta">
       <span class="k">类型</span><span class="v">PV / 二创</span>
       <span class="k">时间</span><span class="v">2025</span>
       <span class="k">角色</span><span class="v">独立创作</span>
       <span class="k">编号</span><span class="v">Project 05</span>
     </div>
-    <p class="detail-lead">基于动漫《彻夜之歌》的真人版 PV 创作。</p>
+    <p class="detail-lead">基于动漫《彻夜之歌》的 CG 版 PV 创作。</p>
 
     <div class="video-stage">
       <div class="ratio">
-        <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=117511278299489&bvid=BV1CAxK6REGv&cid=43091035056&p=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        <video controls>
+          <source src="https://1518216049.vod-qcloud.com/9c54cdefvodtranscq1518216049/793bc1655001834825774478034/v.f100840.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
 
     <section class="dsec">
       <div class="dsec-head"><span class="dsec-num">01</span><h2 class="dsec-title">项目背景</h2></div>
-      <div class="dsec-body"><p>短视频创意制作课程作业，基于当时非常喜爱的一部番剧《彻夜之歌》PV内容的真人版二创。</p></div>
+      <div class="dsec-body"><p>短视频创意制作课程作业，基于当时非常喜爱的一部番剧《彻夜之歌》PV内容的 CG 版二创。</p></div>
     </section>
 
     <section class="dsec">
@@ -767,7 +796,9 @@ ul,ol{list-style:none}
 
     <div class="video-stage">
       <div class="ratio">
-        <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=117511345408788&bvid=BV12oxN6fE5W&cid=43091363862&p=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        <video controls>
+          <source src="https://1518216049.vod-qcloud.com/9c54cdefvodtranscq1518216049/78f36c855001834825774438362/v.f100840.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
 
@@ -780,7 +811,7 @@ ul,ol{list-style:none}
       <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">工作流截图</h2></div>
       <div class="story-grid">
         <div class="story-item landscape" style="grid-column: span 3; aspect-ratio: 21/9;">
-          <img src="https://picui.ogmua.cn/s1/2026/10/26/6adf3712e5327.webp" loading="lazy" alt="工作流截图">
+          <img src="https://i.imgs.ovh/2026/10/27/89ee96996a44fe4bf74d497f5a7433b3.png" loading="lazy" alt="工作流截图">
         </div>
       </div>
     </section>
@@ -793,7 +824,7 @@ ul,ol{list-style:none}
     </section>
 
     <nav class="pager pager-3">
-      <a href="#/project/yofukashi"><span class="dir">上一个项目</span><span class="t">← 彻夜之歌真人版PV</span></a>
+      <a href="#/project/yofukashi"><span class="dir">上一个项目</span><span class="t">← 彻夜之歌CG版PV</span></a>
       <a href="#/home" class="center"><span class="dir">返回</span><span class="t">回到作品首页</span></a>
       <a href="#/project/tvc"><span class="dir">下一个项目</span><span class="t">AI萌系动画 →</span></a>
     </nav>
@@ -815,7 +846,9 @@ ul,ol{list-style:none}
 
     <div class="video-stage">
       <div class="ratio">
-        <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=117511345408889&bvid=BV12oxN6fEVq&cid=43091429156&p=1&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        <video controls>
+          <source src="https://1518216049.vod-qcloud.com/9c54cdefvodtranscq1518216049/d50a12eb5001834825843186596/v.f100800.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
 
@@ -828,7 +861,7 @@ ul,ol{list-style:none}
       <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">工作流与视频展示</h2></div>
       <div class="story-grid">
         <div class="story-item landscape">
-          <img src="https://picui.ogmua.cn/s1/2026/10/26/6adf371304a49.webp" loading="lazy" alt="工作流截图">
+          <img src="https://i.imgs.ovh/2026/10/27/d2e75f91510b595663a927513cb956b3.png" loading="lazy" alt="工作流截图">
         </div>
         <div class="story-item landscape placeholder"><span>咕咕嘎嘎 视频占位</span></div>
         <div class="story-item landscape placeholder"><span>菲比 视频占位</span></div>
@@ -880,13 +913,13 @@ ul,ol{list-style:none}
               <li><span>办公工具</span><span>Office 全套 / WPS / 飞书</span></li>
             </ul>
           </div>
+          <!-- 关于页的联系方式（已删除了作品集那一栏） -->
           <div class="about-block" style="margin-top:26px">
             <h3>联系</h3>
             <ul>
               <li><span>所在地</span><span>广州</span></li>
               <li><span>电话</span><span>19210025630</span></li>
               <li><span>邮箱</span><span>2642418467@qq.com</span></li>
-              <li><span>作品集</span><span>石墨文档链接</span></li>
             </ul>
           </div>
         </div>
