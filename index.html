@@ -185,9 +185,15 @@ ul,ol{list-style:none}
 .detail-lead{color:var(--muted);font-size:19px;max-width:760px;margin:26px 0 40px;line-height:1.7;}
 
 /* 视频容器 */
-.video-stage{margin:0 0 64px;position:relative;border:1px solid var(--line-strong);background:var(--bg2);overflow:hidden; border-radius: 4px;}
+.video-stage{margin:0 0 24px;position:relative;border:1px solid var(--line-strong);background:var(--bg2);overflow:hidden; border-radius: 4px;}
 .video-stage .ratio{aspect-ratio:16/9;display:grid;place-items:center;color:var(--faint)}
 .video-stage video { width: 100%; height: 100%; position: absolute; inset: 0; background: #000; object-fit: contain; outline: none; }
+
+/* 视频切换栏 */
+.video-tabs { display: flex; gap: 12px; margin-bottom: 64px; overflow-x: auto; padding-bottom: 8px; }
+.video-tab { flex: 1; min-width: 120px; background: var(--bg2); border: 1px solid var(--line); color: var(--muted); padding: 12px; text-align: center; font-size: 14px; cursor: pointer; transition: all 0.2s; border-radius: 4px; }
+.video-tab:hover { border-color: var(--accent); color: var(--text); }
+.video-tab.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
 
 .dsec{padding:64px 0 0;max-width:900px}
 .dsec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:20px}
@@ -238,8 +244,9 @@ ul,ol{list-style:none}
   max-width: 95vw; max-height: 95vh;
   transform-origin: 0 0; 
   cursor: grab;
+  transition: transform 0.2s ease-out;
 }
-.lightbox img:active { cursor: grabbing; }
+.lightbox img:active { cursor: grabbing; transition: none; }
 
 .lightbox-close {
   position: absolute; top: 24px; right: 32px;
@@ -317,7 +324,7 @@ ul,ol{list-style:none}
 <!-- 灯箱容器 -->
 <div class="lightbox" id="lightbox">
   <div class="lightbox-close" id="lightbox-close">×</div>
-  <img src="" alt="放大预览" id="lightbox-img">
+  <img src="" alt="放大预览" id="lightbox-img" loading="lazy">
 </div>
 
 <!-- ===================== 顶部导航 ===================== -->
@@ -347,43 +354,43 @@ ul,ol{list-style:none}
     
     <p class="hero-sub">从提示词设计、分镜预演，到 AI 素材生成与成片剪辑，全链路可控。<br>求职方向：<strong>AIGC 视频实习生</strong>。</p>
 
-    <!-- 滚动图片画廊 -->
+    <!-- 滚动图片画廊 (首页首屏采用懒加载) -->
     <div class="hero-showcase">
       <div class="corner tl"></div><div class="corner tr"></div>
       <div class="corner bl"></div><div class="corner br"></div>
 
       <div class="marquee-track">
         <!-- 第一组 -->
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg" alt="作品1"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a19c16eff120d1f812814a65e1825620.jpg" alt="作品2"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a1ed02874ad76d91a8fdb42290a04b6e.png" alt="作品3"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/f48d99c04a47870a9771838c2fed9ba5.jpg" alt="作品4"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c2500e60c6b3a04204ad8cbdf5f926a1.png" alt="作品5"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/546eb2b8076bf760289419a69e1111a9.png" alt="作品6"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/31260906695efaf8c67e6b3efa840445.png" alt="作品7"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/2f279275cce32f23b65170b841f81e71.png" alt="作品8"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/91a39e4c5bcb6529a1782706a9f71603.png" alt="作品9"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/674cc7d1a9c9887efb00111fa3c41267.png" alt="作品10"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/885466ff658baca9a6f86defde5cacce.png" alt="作品11"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/8ae7e2326619f84ac47498a7b9ec490b.png" alt="作品12"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/1bba2625e5789f38b20127d265621380.png" alt="作品13"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c407331f64ddc2b0dd2050504e29e47f.png" alt="作品14"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg" loading="lazy" alt="作品1"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a19c16eff120d1f812814a65e1825620.jpg" loading="lazy" alt="作品2"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a1ed02874ad76d91a8fdb42290a04b6e.png" loading="lazy" alt="作品3"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/f48d99c04a47870a9771838c2fed9ba5.jpg" loading="lazy" alt="作品4"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c2500e60c6b3a04204ad8cbdf5f926a1.png" loading="lazy" alt="作品5"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/546eb2b8076bf760289419a69e1111a9.png" loading="lazy" alt="作品6"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/31260906695efaf8c67e6b3efa840445.png" loading="lazy" alt="作品7"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/2f279275cce32f23b65170b841f81e71.png" loading="lazy" alt="作品8"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/91a39e4c5bcb6529a1782706a9f71603.png" loading="lazy" alt="作品9"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/674cc7d1a9c9887efb00111fa3c41267.png" loading="lazy" alt="作品10"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/885466ff658baca9a6f86defde5cacce.png" loading="lazy" alt="作品11"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/8ae7e2326619f84ac47498a7b9ec490b.png" loading="lazy" alt="作品12"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/1bba2625e5789f38b20127d265621380.png" loading="lazy" alt="作品13"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c407331f64ddc2b0dd2050504e29e47f.png" loading="lazy" alt="作品14"></div>
 
         <!-- 第二组（用于无缝循环） -->
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg" alt="作品1"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a19c16eff120d1f812814a65e1825620.jpg" alt="作品2"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a1ed02874ad76d91a8fdb42290a04b6e.png" alt="作品3"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/f48d99c04a47870a9771838c2fed9ba5.jpg" alt="作品4"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c2500e60c6b3a04204ad8cbdf5f926a1.png" alt="作品5"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/546eb2b8076bf760289419a69e1111a9.png" alt="作品6"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/31260906695efaf8c67e6b3efa840445.png" alt="作品7"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/2f279275cce32f23b65170b841f81e71.png" alt="作品8"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/91a39e4c5bcb6529a1782706a9f71603.png" alt="作品9"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/674cc7d1a9c9887efb00111fa3c41267.png" alt="作品10"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/885466ff658baca9a6f86defde5cacce.png" alt="作品11"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/8ae7e2326619f84ac47498a7b9ec490b.png" alt="作品12"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/1bba2625e5789f38b20127d265621380.png" alt="作品13"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c407331f64ddc2b0dd2050504e29e47f.png" alt="作品14"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg" loading="lazy" alt="作品1"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a19c16eff120d1f812814a65e1825620.jpg" loading="lazy" alt="作品2"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a1ed02874ad76d91a8fdb42290a04b6e.png" loading="lazy" alt="作品3"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/f48d99c04a47870a9771838c2fed9ba5.jpg" loading="lazy" alt="作品4"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c2500e60c6b3a04204ad8cbdf5f926a1.png" loading="lazy" alt="作品5"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/546eb2b8076bf760289419a69e1111a9.png" loading="lazy" alt="作品6"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/31260906695efaf8c67e6b3efa840445.png" loading="lazy" alt="作品7"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/2f279275cce32f23b65170b841f81e71.png" loading="lazy" alt="作品8"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/91a39e4c5bcb6529a1782706a9f71603.png" loading="lazy" alt="作品9"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/674cc7d1a9c9887efb00111fa3c41267.png" loading="lazy" alt="作品10"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/885466ff658baca9a6f86defde5cacce.png" loading="lazy" alt="作品11"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/8ae7e2326619f84ac47498a7b9ec490b.png" loading="lazy" alt="作品12"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/1bba2625e5789f38b20127d265621380.png" loading="lazy" alt="作品13"></div>
+        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c407331f64ddc2b0dd2050504e29e47f.png" loading="lazy" alt="作品14"></div>
       </div>
 
       <div class="showcase-foot">
@@ -534,7 +541,7 @@ ul,ol{list-style:none}
     </div>
   </section>
 
-  <!-- ===== 页脚（已删除作品集链接） ===== -->
+  <!-- ===== 页脚 ===== -->
   <footer class="footer" id="contact">
     <div class="footer-inner">
       <h2>有合适的镜头，<br>也有一整套把事情做完的流程。</h2>
@@ -562,12 +569,12 @@ ul,ol{list-style:none}
     </div>
     <p class="detail-lead">结合年轻人喜欢的视频风格，运用幽默搞笑的迪士尼动画片风格，围绕“北极擂台战”展开故事叙述，其中，将产品的卖点与动画片中鳕鱼的技能招式结合起来，强化了力诚海洋食品的产品定位以及提升产品在年轻群体中的认知度。而动画的末尾出现的大反转，“遥不可及”、“强大”的鳕鱼从遥远北极降临到你身边，能为“喜欢海味”的消费者提供情绪价值。</p>
 
-    <div class="video-stage" style="margin-bottom: 0;">
+    <div class="video-stage" style="margin-bottom: 64px;">
       <div class="ratio story-item landscape" style="background: url('https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg') center/cover; cursor: zoom-in; border: none; border-radius: 0;">
       </div>
-      <div class="foot"><span>AD · AIGC · 学院金奖</span><span>成片 · 约 45s</span></div>
+      <div class="foot" style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:30px 16px 12px;font-size:12px;color:var(--faint);letter-spacing:.08em;background:linear-gradient(transparent,rgba(14,13,11,.8)); z-index: 10;"><span>AD · AIGC · 学院金奖</span><span>成片 · 约 45s</span></div>
     </div>
-    <div style="text-align: center; margin-bottom: 64px; padding-top: 20px;">
+    <div style="text-align: center; margin-bottom: 64px;">
       <a href="https://www.5iidea.com/worksContent/22101" target="_blank" style="
         display: inline-flex; align-items: center; gap: 8px;
         padding: 12px 24px; background: var(--panel); color: var(--accent);
@@ -842,31 +849,43 @@ ul,ol{list-style:none}
       <span class="k">角色</span><span class="v">独立创作</span>
       <span class="k">编号</span><span class="v">Project 04</span>
     </div>
-    <p class="detail-lead">咕咕嘎嘎、菲比、Doro、弗糯糯日常。</p>
+    <p class="detail-lead">咕咕嘎嘎、菲比、Doro、弗糯糯的小日常。</p>
 
     <div class="video-stage">
       <div class="ratio">
-        <video controls>
-          <source src="https://1518216049.vod-qcloud.com/9c54cdefvodtranscq1518216049/d50a12eb5001834825843186596/v.f100800.mp4" type="video/mp4">
+        <video controls id="moe-video-player">
+          <source src="https://1518216049.vod-qcloud.com/9c54cdefvodtranscq1518216049/d50a12eb5001834825843186596/v.f100800.mp4" type="video/mp4" id="moe-video-source">
         </video>
       </div>
     </div>
 
+    <div class="video-tabs" id="video-tabs">
+      <button class="video-tab active" onclick="switchVideo('https://1518216049.vod-qcloud.com/9c54cdefvodtranscq1518216049/d50a12eb5001834825843186596/v.f100800.mp4', this)">单集 01</button>
+      <button class="video-tab" onclick="switchVideo('https://1518216049.vod-qcloud.com/c56ae047vodcq1518216049/9d538f545001834825866518889/GthV74prEN0A.mp4', this)">单集 02</button>
+      <button class="video-tab" onclick="switchVideo('https://1518216049.vod-qcloud.com/c56ae047vodcq1518216049/7d517fff5001834825869222252/SxjaWJKkD4UA.mp4', this)">单集 03</button>
+      <button class="video-tab" onclick="switchVideo('https://1518216049.vod-qcloud.com/c56ae047vodcq1518216049/565df1045001834825936916216/xU6dp8Kih0EA.mp4', this)">单集 04</button>
+      <button class="video-tab" onclick="switchVideo('https://1518216049.vod-qcloud.com/c56ae047vodcq1518216049/f1a726ab5001834825867867530/cLPHK5Msau4A.mp4', this)">单集 05</button>
+    </div>
+
     <section class="dsec">
       <div class="dsec-head"><span class="dsec-num">01</span><h2 class="dsec-title">项目背景</h2></div>
-      <div class="dsec-body"><p>此处可补充你创作这四个日常小动画的背景与灵感。</p></div>
+      <div class="dsec-body"><p>咕咕嘎嘎、菲比、Doro、弗糯糯的小日常。</p></div>
     </section>
 
     <section class="dsec">
-      <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">工作流与视频展示</h2></div>
+      <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">角色图展示</h2></div>
       <div class="story-grid">
         <div class="story-item landscape">
           <img src="https://i.imgs.ovh/2026/10/27/d2e75f91510b595663a927513cb956b3.png" loading="lazy" alt="工作流截图">
         </div>
-        <div class="story-item landscape placeholder"><span>咕咕嘎嘎 视频占位</span></div>
-        <div class="story-item landscape placeholder"><span>菲比 视频占位</span></div>
-        <div class="story-item landscape placeholder"><span>Doro 视频占位</span></div>
-        <div class="story-item landscape placeholder"><span>弗糯糯 视频占位</span></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/b10603142c45836980cf44308f314969.png" loading="lazy" alt="角色图1"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/7e14d9d2b31143b2ea299f8b51fe6fd8.png" loading="lazy" alt="角色图2"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/f50d8f0acaedaad667aad43d94262c15.png" loading="lazy" alt="角色图3"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/f1c7bc83a1da1d80f8f6d19db8251576.jpg" loading="lazy" alt="角色图4"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/ab17f84ff73df8965b97013d634b0504.jpg" loading="lazy" alt="角色图5"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/0951ad4fb5c28ec6fc29fa29a53d9a74.jpg" loading="lazy" alt="角色图6"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/a8c29ef906dbafba590f726a0d571729.jpg" loading="lazy" alt="角色图7"></div>
+        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/44a14af8dca36c73c2d24fe1f57849f6.png" loading="lazy" alt="角色图8"></div>
       </div>
     </section>
 
@@ -894,7 +913,8 @@ ul,ol{list-style:none}
           </div>
           <div class="about-block" style="margin-top:26px">
             <h3>工作流</h3>
-            <p>创意与分镜 → 提示词设计 → AI 素材生成 → 镜头筛选整合 → 成片剪辑与节奏。AIGC 生产工具流 + 无限画布工作方式，同步跟进 Sora、Workbuddy 等新工具。</p>
+            <!-- 优化后的求职表达 -->
+            <p>能独立胜任 AIGC 视频的全流程角色，涵盖：创意与分镜、提示词设计、AI 素材生成、镜头筛选整合、成片剪辑与节奏。熟练掌握 AIGC 生产工具流与无限画布工作方式，同步跟进 Sora、Workbuddy 等新工具。</p>
           </div>
         </div>
         <div>
@@ -913,7 +933,6 @@ ul,ol{list-style:none}
               <li><span>办公工具</span><span>Office 全套 / WPS / 飞书</span></li>
             </ul>
           </div>
-          <!-- 关于页的联系方式（已删除了作品集那一栏） -->
           <div class="about-block" style="margin-top:26px">
             <h3>联系</h3>
             <ul>
@@ -929,6 +948,20 @@ ul,ol{list-style:none}
 </main>
 
 <script>
+// ====== 萌系视频切换逻辑 ======
+function switchVideo(url, btn) {
+  var video = document.getElementById('moe-video-player');
+  var source = document.getElementById('moe-video-source');
+  source.src = url;
+  video.load();
+  video.play();
+  
+  // 更新按钮高亮
+  var tabs = document.querySelectorAll('.video-tab');
+  tabs.forEach(function(tab) { tab.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
 (function(){
   function resolveRoute(){
     const hash = location.hash || '#/home';
@@ -966,7 +999,7 @@ ul,ol{list-style:none}
 
   route();
 
-  // ===== 增强版灯箱功能 =====
+  // ===== 增强版灯箱功能（支持双击放大任意位置） =====
   var lightbox = document.getElementById('lightbox');
   var lightboxImg = document.getElementById('lightbox-img');
   var lightboxClose = document.getElementById('lightbox-close');
@@ -974,20 +1007,29 @@ ul,ol{list-style:none}
   var scale = 1;
   var translateX = 0;
   var translateY = 0;
+  
   var isDragging = false;
   var startX = 0;
   var startY = 0;
+  var mouseDownTime = 0;
+  var movedDistance = 0;
 
+  // 打开灯箱
   document.querySelectorAll('.story-item img, .story-item.landscape[style*="url"]').forEach(function(target) {
     target.addEventListener('click', function(e) {
       e.stopPropagation();
       var imgUrl = this.tagName === 'IMG' ? this.src : this.style.backgroundImage.slice(5, -2);
       lightboxImg.src = imgUrl;
-      scale = 1; translateX = 0; translateY = 0;
-      updateTransform();
+      resetTransform();
       lightbox.classList.add('active');
     });
   });
+
+  function resetTransform() {
+    scale = 1; translateX = 0; translateY = 0;
+    lightboxImg.style.transform = `translate(0px, 0px) scale(1)`;
+    lightboxImg.style.transformOrigin = 'center center';
+  }
 
   function updateTransform() {
     lightboxImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
@@ -1000,27 +1042,54 @@ ul,ol{list-style:none}
 
   lightboxClose.addEventListener('click', closeLightbox);
 
-  window.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && lightbox.classList.contains('active')) closeLightbox();
+  // 双击放大/还原（以鼠标位置为中心）
+  lightboxImg.addEventListener('dblclick', function(e) {
+    e.stopPropagation();
+    if (scale > 1.1) {
+      // 已经是放大状态，双击还原
+      resetTransform();
+    } else {
+      // 正常状态，双击放大
+      var rect = lightboxImg.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      
+      scale = 2.5; // 放大 2.5 倍
+      translateX = -(x * (scale - 1));
+      translateY = -(y * (scale - 1));
+      
+      lightboxImg.style.transformOrigin = '0 0';
+      updateTransform();
+    }
   });
 
+  // 鼠标滚轮缩放
   lightbox.addEventListener('wheel', function(e) {
     e.preventDefault();
     if (e.deltaY < 0) { scale *= 1.15; } else { scale /= 1.15; }
     if (scale < 0.2) scale = 0.2; 
+    
+    lightboxImg.style.transformOrigin = 'center center';
     updateTransform();
   }, { passive: false });
 
+  // 拖拽与点击检测
   lightboxImg.addEventListener('mousedown', function(e) {
     e.preventDefault();
     isDragging = true;
+    movedDistance = 0;
     startX = e.clientX - translateX;
     startY = e.clientY - translateY;
     lightboxImg.style.cursor = 'grabbing';
+    lightboxImg.style.transition = 'none'; // 拖拽时去掉过渡动画，防止卡顿
   });
 
   window.addEventListener('mousemove', function(e) {
     if (isDragging) {
+      var dx = e.clientX - startX - translateX;
+      var dy = e.clientY - startY - translateY;
+      movedDistance += Math.abs(dx) + Math.abs(dy);
+      
       translateX = e.clientX - startX;
       translateY = e.clientY - startY;
       updateTransform();
@@ -1031,7 +1100,19 @@ ul,ol{list-style:none}
     if (isDragging) {
       isDragging = false;
       lightboxImg.style.cursor = 'grab';
+      lightboxImg.style.transition = 'transform 0.2s ease-out'; // 恢复过渡动画
     }
+  });
+
+  // 点击背景关闭（如果点击时移动距离极小，才认为是单击）
+  lightbox.addEventListener('click', function(e) {
+    if (movedDistance < 5) {
+      closeLightbox();
+    }
+  });
+
+  window.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && lightbox.classList.contains('active')) closeLightbox();
   });
 })();
 </script>
