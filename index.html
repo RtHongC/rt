@@ -38,10 +38,29 @@ ul,ol{list-style:none}
   backdrop-filter:blur(4px);border-bottom:1px solid rgba(41,36,28,.0)}
 .nav-brand{font-family:var(--serif);font-size:20px;letter-spacing:.04em;color:var(--text)}
 .nav-brand .dot{color:var(--accent)}
-.nav-links{display:flex;gap:6px;font-size:15px}
+.nav-links{display:flex;gap:6px;font-size:15px; align-items: center;}
 .nav-links a{color:var(--muted);padding:6px 12px;border-radius:2px;transition:color .2s}
 .nav-links a:hover{color:var(--text)}
 .nav-links a.on{color:var(--text);font-weight:600}
+
+/* 下载简历按钮 */
+.btn-download {
+  margin-left: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 2px;
+  font-size: 14px;
+  transition: all 0.25s;
+}
+.btn-download:hover {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: 0 0 10px rgba(159, 181, 163, 0.3);
+}
 
 /* ===== 视图切换 ===== */
 .view{display:none;position:relative;z-index:1}
@@ -264,14 +283,6 @@ ul,ol{list-style:none}
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* 工作流 */
-.workflow{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--line-strong)}
-.wf-step{padding:24px;border-bottom:1px solid var(--line-strong);background:var(--panel);}
-.wf-step:last-child{border-bottom:none}
-.wf-num{font-family:var(--serif);color:var(--accent);font-size:15px;margin-bottom:10px;display:block;font-weight:600;}
-.wf-name{font-weight:600;font-size:17px;margin-bottom:6px;color:var(--text);}
-.wf-desc{color:var(--muted);font-size:15.5px;line-height:1.6;}
-
 /* ===== 项目跳转导航 ===== */
 .pager{display:grid;gap:16px;margin:80px 0 0;border-top:1px solid var(--line-strong);padding-top:32px}
 .pager.pager-2 { grid-template-columns: 1fr 1fr; }
@@ -293,10 +304,6 @@ ul,ol{list-style:none}
 /* ===== 响应式 ===== */
 @media (min-width:640px){
   .skills{grid-template-columns:repeat(2,1fr)}
-  .workflow{grid-template-columns:repeat(2,1fr)}
-  .wf-step{border-right:1px solid var(--line-strong)}
-  .wf-step:nth-child(2n){border-right:none}
-  .wf-step:nth-last-child(-n+2){border-bottom:none}
 }
 @media (min-width:900px){
   .nav{padding:24px 40px}
@@ -305,17 +312,13 @@ ul,ol{list-style:none}
   .work-card.featured{grid-column:span 6}
   .work-card.full{grid-column:span 6}
   .work-card.half{grid-column:span 3}
-  
   .about-cols{grid-template-columns:1.2fr 1fr;gap:60px}
-  .workflow{grid-template-columns:repeat(4,1fr)}
-  .wf-step{border-right:1px solid var(--line-strong)}
-  .wf-step:nth-child(2n){border-right:1px solid var(--line-strong)}
-  .wf-step:nth-child(4n){border-right:none}
-  .wf-step:nth-last-child(-n+4){border-bottom:none}
 }
 @media (max-width: 768px) {
   .story-grid { grid-template-columns: repeat(2, 1fr); }
   .pager.pager-3 { grid-template-columns: 1fr; }
+  .nav-links a { display: none; }
+  .btn-download { display: inline-flex; margin-left: 0; }
 }
 </style>
 </head>
@@ -334,6 +337,11 @@ ul,ol{list-style:none}
     <a href="#/home" data-nav="home">作品</a>
     <a href="#/about" data-nav="about">关于</a>
     <a href="#/home" data-nav="contact">联系</a>
+    <!-- 下载简历按钮（指向根目录下的中文简历文件，已做URL编码） -->
+    <a href="%E8%8B%8F%E7%BA%A2%E6%9C%9D-AIGC%E8%A7%86%E9%A2%91%E5%AE%9E%E4%B9%A0%E7%94%9F.pdf" download class="btn-download">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      下载简历
+    </a>
   </div>
 </nav>
 
@@ -354,43 +362,39 @@ ul,ol{list-style:none}
     
     <p class="hero-sub">从提示词设计、分镜预演，到 AI 素材生成与成片剪辑，全链路可控。<br>求职方向：<strong>AIGC 视频实习生</strong>。</p>
 
-    <!-- 滚动图片画廊 (首页首屏采用懒加载) -->
+    <!-- 滚动图片画廊 (使用腾讯云 COS) -->
     <div class="hero-showcase">
       <div class="corner tl"></div><div class="corner tr"></div>
       <div class="corner bl"></div><div class="corner br"></div>
 
       <div class="marquee-track">
-        <!-- 第一组 -->
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg" loading="lazy" alt="作品1"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a19c16eff120d1f812814a65e1825620.jpg" loading="lazy" alt="作品2"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a1ed02874ad76d91a8fdb42290a04b6e.png" loading="lazy" alt="作品3"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/f48d99c04a47870a9771838c2fed9ba5.jpg" loading="lazy" alt="作品4"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c2500e60c6b3a04204ad8cbdf5f926a1.png" loading="lazy" alt="作品5"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/546eb2b8076bf760289419a69e1111a9.png" loading="lazy" alt="作品6"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/31260906695efaf8c67e6b3efa840445.png" loading="lazy" alt="作品7"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/2f279275cce32f23b65170b841f81e71.png" loading="lazy" alt="作品8"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/91a39e4c5bcb6529a1782706a9f71603.png" loading="lazy" alt="作品9"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/674cc7d1a9c9887efb00111fa3c41267.png" loading="lazy" alt="作品10"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/885466ff658baca9a6f86defde5cacce.png" loading="lazy" alt="作品11"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/8ae7e2326619f84ac47498a7b9ec490b.png" loading="lazy" alt="作品12"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/1bba2625e5789f38b20127d265621380.png" loading="lazy" alt="作品13"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c407331f64ddc2b0dd2050504e29e47f.png" loading="lazy" alt="作品14"></div>
+        <!-- 第一组 12 张 (混合项目封面和图片) -->
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xyfm.jpg" loading="lazy" alt="作品1"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hmfm.png" loading="lazy" alt="作品2"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mxfm.png" loading="lazy" alt="作品3"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pvfm.png" loading="lazy" alt="作品4"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/dadou/ddfm.png" loading="lazy" alt="作品5"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xy1.jpg" loading="lazy" alt="作品6"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm1.jpg" loading="lazy" alt="作品7"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mx1.png" loading="lazy" alt="作品8"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pv1.png" loading="lazy" alt="作品9"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xy2.jpg" loading="lazy" alt="作品10"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm2.png" loading="lazy" alt="作品11"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mx2.png" loading="lazy" alt="作品12"></div>
 
-        <!-- 第二组（用于无缝循环） -->
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg" loading="lazy" alt="作品1"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a19c16eff120d1f812814a65e1825620.jpg" loading="lazy" alt="作品2"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/a1ed02874ad76d91a8fdb42290a04b6e.png" loading="lazy" alt="作品3"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/f48d99c04a47870a9771838c2fed9ba5.jpg" loading="lazy" alt="作品4"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c2500e60c6b3a04204ad8cbdf5f926a1.png" loading="lazy" alt="作品5"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/546eb2b8076bf760289419a69e1111a9.png" loading="lazy" alt="作品6"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/31260906695efaf8c67e6b3efa840445.png" loading="lazy" alt="作品7"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/2f279275cce32f23b65170b841f81e71.png" loading="lazy" alt="作品8"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/91a39e4c5bcb6529a1782706a9f71603.png" loading="lazy" alt="作品9"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/674cc7d1a9c9887efb00111fa3c41267.png" loading="lazy" alt="作品10"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/885466ff658baca9a6f86defde5cacce.png" loading="lazy" alt="作品11"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/8ae7e2326619f84ac47498a7b9ec490b.png" loading="lazy" alt="作品12"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/1bba2625e5789f38b20127d265621380.png" loading="lazy" alt="作品13"></div>
-        <div class="marquee-item"><img src="https://i.imgs.ovh/2026/10/27/c407331f64ddc2b0dd2050504e29e47f.png" loading="lazy" alt="作品14"></div>
+        <!-- 第二组 12 张（用于无缝循环） -->
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xyfm.jpg" loading="lazy" alt="作品1"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hmfm.png" loading="lazy" alt="作品2"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mxfm.png" loading="lazy" alt="作品3"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pvfm.png" loading="lazy" alt="作品4"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/dadou/ddfm.png" loading="lazy" alt="作品5"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xy1.jpg" loading="lazy" alt="作品6"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm1.jpg" loading="lazy" alt="作品7"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mx1.png" loading="lazy" alt="作品8"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pv1.png" loading="lazy" alt="作品9"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xy2.jpg" loading="lazy" alt="作品10"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm2.png" loading="lazy" alt="作品11"></div>
+        <div class="marquee-item"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mx2.png" loading="lazy" alt="作品12"></div>
       </div>
 
       <div class="showcase-foot">
@@ -411,7 +415,7 @@ ul,ol{list-style:none}
       <!-- 作品 01 -->
       <article class="work-card featured">
         <a href="#/project/featured" class="frame" style="display: block; position: relative; text-decoration: none;">
-          <div class="ratio" style="background: url('https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg') center/cover; border-radius: 2px;">
+          <div class="ratio" style="background: url('https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xyfm.jpg') center/cover; border-radius: 2px;">
             <div style="position: absolute; inset: 0; background: linear-gradient(transparent 60%, rgba(14,13,11,0.8));"></div>
           </div>
           <div class="foot" style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:30px 16px 12px;font-size:12px;color:#ccc;background:linear-gradient(transparent,rgba(14,13,11,.9)); z-index: 2;">
@@ -431,7 +435,7 @@ ul,ol{list-style:none}
       <!-- 作品 02 -->
       <article class="work-card full">
         <div class="frame">
-          <a href="#/project/zhiguai" class="ratio" style="display: block; background: url('https://i.imgs.ovh/2026/10/26/bfc984cf9d0480be7ffdbd2d4d8a0530.png') center/cover; text-decoration: none;">
+          <a href="#/project/zhiguai" class="ratio" style="display: block; background: url('https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hmfm.png') center/cover; text-decoration: none;">
             <div style="position: absolute; inset: 0; background: linear-gradient(transparent 60%, rgba(14,13,11,0.8));"></div>
           </a>
           <div class="foot" style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:30px 16px 12px;font-size:12px;color:var(--faint);background:linear-gradient(transparent,rgba(14,13,11,.8));"><span>NARRATIVE · AIGC</span><span>2026.9.21-2026.9.26</span></div>
@@ -447,7 +451,7 @@ ul,ol{list-style:none}
       <!-- 作品 05 -->
       <article class="work-card full">
         <div class="frame">
-          <a href="#/project/yofukashi" class="ratio" style="display: block; background: url('https://i.imgs.ovh/2026/10/27/926de412ebdcdf31187f263e54ef3364.png') center/cover; text-decoration: none;">
+          <a href="#/project/yofukashi" class="ratio" style="display: block; background: url('https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pvfm.png') center/cover; text-decoration: none;">
             <div style="position: absolute; inset: 0; background: linear-gradient(transparent 60%, rgba(14,13,11,0.8));"></div>
           </a>
           <div class="foot" style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:30px 16px 12px;font-size:12px;color:var(--faint);background:linear-gradient(transparent,rgba(14,13,11,.8));"><span>PV · AIGC</span><span>2025</span></div>
@@ -460,10 +464,10 @@ ul,ol{list-style:none}
         <a class="work-link" href="#/project/yofukashi">查看项目详情 →</a>
       </article>
 
-      <!-- 作品 03 -->
+      <!-- 作品 03 (AI动画打斗试验作) -->
       <article class="work-card half">
         <div class="frame">
-          <a href="#/project/experiment" class="ratio" style="display: block; background: url('https://i.imgs.ovh/2026/10/27/26f9257cc886fac007423ddaedb8048d.png') center/cover; text-decoration: none;">
+          <a href="#/project/experiment" class="ratio" style="display: block; background: url('https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/dadou/ddfm.png') center/cover; text-decoration: none;">
             <div style="position: absolute; inset: 0; background: linear-gradient(transparent 60%, rgba(14,13,11,0.8));"></div>
           </a>
           <div class="foot" style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:30px 16px 12px;font-size:12px;color:var(--faint);background:linear-gradient(transparent,rgba(14,13,11,.8));"><span>EXPERIMENT · AIGC</span><span>进行中</span></div>
@@ -476,10 +480,10 @@ ul,ol{list-style:none}
         <a class="work-link" href="#/project/experiment">查看项目详情 →</a>
       </article>
 
-      <!-- 作品 04 -->
+      <!-- 作品 04 (AI萌系动画) -->
       <article class="work-card half">
         <div class="frame">
-          <a href="#/project/tvc" class="ratio" style="display: block; background: url('https://i.imgs.ovh/2026/10/27/7de50638b229b7c022455cf58d6e60e7.png') center/cover; text-decoration: none;">
+          <a href="#/project/tvc" class="ratio" style="display: block; background: url('https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mxfm.png') center/cover; text-decoration: none;">
             <div style="position: absolute; inset: 0; background: linear-gradient(transparent 60%, rgba(14,13,11,0.8));"></div>
           </a>
           <div class="foot" style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:30px 16px 12px;font-size:12px;color:var(--faint);background:linear-gradient(transparent,rgba(14,13,11,.8));"><span>ANIMATION · AIGC</span><span>进行中</span></div>
@@ -570,7 +574,7 @@ ul,ol{list-style:none}
     <p class="detail-lead">结合年轻人喜欢的视频风格，运用幽默搞笑的迪士尼动画片风格，围绕“北极擂台战”展开故事叙述，其中，将产品的卖点与动画片中鳕鱼的技能招式结合起来，强化了力诚海洋食品的产品定位以及提升产品在年轻群体中的认知度。而动画的末尾出现的大反转，“遥不可及”、“强大”的鳕鱼从遥远北极降临到你身边，能为“喜欢海味”的消费者提供情绪价值。</p>
 
     <div class="video-stage" style="margin-bottom: 64px;">
-      <div class="ratio story-item landscape" style="background: url('https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg') center/cover; cursor: zoom-in; border: none; border-radius: 0;">
+      <div class="ratio story-item landscape" style="background: url('https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xyfm.jpg') center/cover; cursor: zoom-in; border: none; border-radius: 0;">
       </div>
       <div class="foot" style="position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;padding:30px 16px 12px;font-size:12px;color:var(--faint);letter-spacing:.08em;background:linear-gradient(transparent,rgba(14,13,11,.8)); z-index: 10;"><span>AD · AIGC · 学院金奖</span><span>成片 · 约 45s</span></div>
     </div>
@@ -601,31 +605,32 @@ ul,ol{list-style:none}
       </ul>
     </section>
 
+    <!-- 鳕鱼王素材和分镜：封面放第一张 -->
     <section class="dsec">
       <div class="dsec-head"><span class="dsec-num">03</span><h2 class="dsec-title">素材和分镜</h2></div>
       <p class="dsec-body" style="margin-bottom:20px">以下为 AI 生成的素材与分镜对应关系（点击可查看大图）。</p>
       
       <div class="story-grid">
         <div class="story-item landscape">
-          <img src="https://i.imgs.ovh/2026/10/26/7fc314652e7f5816fcef8b92d1b9a22c.jpg" loading="lazy" alt="素材大图">
+          <img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xyfm.jpg" loading="lazy" alt="封面">
         </div>
         <div class="story-item landscape">
-          <img src="https://i.imgs.ovh/2026/10/26/178a39a45d3ffbb7fb037eba37f3cf2e.jpg" loading="lazy" alt="素材2">
+          <img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xy1.jpg" loading="lazy" alt="素材1">
         </div>
         <div class="story-item landscape">
-          <img src="https://i.imgs.ovh/2026/10/26/1ee1da1fd26bfd1342f1ad752bac0982.jpg" loading="lazy" alt="素材3">
+          <img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xy2.jpg" loading="lazy" alt="素材2">
         </div>
         <div class="story-item landscape">
-          <img src="https://i.imgs.ovh/2026/10/26/a863cd237f9465d883e1b1e985ed5129.jpg" loading="lazy" alt="素材4">
+          <img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xy3.jpg" loading="lazy" alt="素材3">
         </div>
         <div class="story-item landscape">
-          <img src="https://picui.ogmua.cn/s1/2026/10/26/6adf3376a42ab.webp" loading="lazy" alt="素材5">
+          <img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xy4.jpg" loading="lazy" alt="素材4">
         </div>
         <div class="story-item landscape">
-          <img src="https://i.imgs.ovh/2026/10/27/e038fe7ea81895dab77d1b7a690e4a0c.jpg" loading="lazy" alt="素材6">
+          <img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/xy5.jpg" loading="lazy" alt="素材5">
         </div>
-        <div class="story-item cert-item">
-          <img src="https://picui.ogmua.cn/s1/2026/10/26/6adf3718a771d.webp" loading="lazy" alt="获奖证书">
+        <div class="story-item landscape">
+          <img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/xy/zhengshu.png" loading="lazy" alt="证书">
         </div>
       </div>
     </section>
@@ -671,11 +676,11 @@ ul,ol{list-style:none}
       <span class="k">角色</span><span class="v">分镜 · 提示词 · 生成</span>
       <span class="k">编号</span><span class="v">Project 02</span>
     </div>
-    <p class="detail-lead">江南有个落魄画师，为求一张绝美的“美人面”，深夜与叩门的青衫老妪做了一笔交易。可老妪拿出的，是一张带着冰裂纹的人皮面具……<br><br>“你若肯替她死，这面便是你的。”<br><br>他不想死，他想逃，可老妪仿佛有某种魔力，将他的双腿死死锁在原地。他只能绝望地看着那张人皮面具离他越来越近，最终死死贴上了他的脸……<br><br>当他再次睁眼，自己竟成了一幅挂在墙上的画。而病愈的柳家小姐，正顶着他那张男人的脸，对镜梳妆，咧嘴笑问：“这画师的脸，倒比原先的还白净些……”<br><br>墙上的画里，一滴浓黑的墨泪，悄无声息地淌了下来。</p>
+    <p class="detail-lead">江南有个落魄画师，为求一张绝美的“美人面”，深夜与叩门的青衫老妪做了一笔交易。可老妪拿出的，是一张带着冰裂纹的人皮面具……<br><br>“你若肯替她死，这面便是你的。”<br><br>他不想死，他想逃，可老妪仿佛有某种魔力，将他的双腿死死锁在原地。他只能绝望地看着那张人皮面具离他越来越近，最终死死贴上了他的脸……<br><br>当他再次睁眼，自己竟成了一幅挂在墙上的画。而病愈的柳家小姐，正顶着他那张男人的脸，对镜梳妆，咧嘴笑问：“这画师的脸，倒比原先的还白净些……”<br><br>墙上的画里，一滴浓黑的泪，悄无声息地淌了下来。</p>
 
     <div class="video-stage">
       <div class="ratio">
-        <video controls>
+        <video controls preload="none">
           <source src="https://1518216049.vod-qcloud.com/9c54cdefvodtranscq1518216049/e8ac7fad5001834825772885825/v.f100800.mp4" type="video/mp4">
         </video>
       </div>
@@ -704,24 +709,24 @@ ul,ol{list-style:none}
       </ul>
     </section>
 
+    <!-- 换面素材和分镜：1-12 -->
     <section class="dsec">
       <div class="dsec-head"><span class="dsec-num">04</span><h2 class="dsec-title">分镜与关键帧</h2></div>
       <p class="dsec-body" style="margin-bottom:20px">人物设定板与场景氛围参考图，展示从分镜到成片的对应关系（点击可查看大图）。</p>
       
       <div class="story-grid">
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/ee1d1b615bf7552fd720814e35a0681c.png" loading="lazy" alt="人物设定1"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/80972ec6b086eaa96f4029c34316c44c.jpg" loading="lazy" alt="人物设定2"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/f96b4d88ad2d39f62ef117920f091bee.png" loading="lazy" alt="人物设定3"></div>
-        
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/81782f3e26c9c855fdd4789ab30fd92e.jpg" loading="lazy" alt="场景1"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/9c0c3964018e85d338e9eda5a63cd5a2.jpg" loading="lazy" alt="场景2"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/b4135008f55c1cfb3b611b22cf0b6d87.png" loading="lazy" alt="场景3"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/bfc984cf9d0480be7ffdbd2d4d8a0530.png" loading="lazy" alt="场景4"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/8af181849aa10a2163a6ce6b25462804.png" loading="lazy" alt="场景5"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/499dbc8a45a73e41df84a11993eeaa49.png" loading="lazy" alt="场景6"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/47d8a27fff94c6eb767b77e81d02644c.png" loading="lazy" alt="场景7"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/fd0457aea4c751646888f95d0fd3918c.jpg" loading="lazy" alt="场景8"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/3fc3afee4ba29c5b4f8c54a470efb8aa.png" loading="lazy" alt="场景9"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm1.jpg" loading="lazy" alt="图1"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm2.png" loading="lazy" alt="图2"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm3.png" loading="lazy" alt="图3"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm4.jpg" loading="lazy" alt="图4"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm5.jpg" loading="lazy" alt="图5"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm6.png" loading="lazy" alt="图6"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm7.jpg" loading="lazy" alt="图7"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm8.png" loading="lazy" alt="图8"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm9.png" loading="lazy" alt="图9"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm10.png" loading="lazy" alt="图10"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm11.png" loading="lazy" alt="图11"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/hm/hm12.png" loading="lazy" alt="图12"></div>
       </div>
     </section>
 
@@ -762,7 +767,7 @@ ul,ol{list-style:none}
 
     <div class="video-stage">
       <div class="ratio">
-        <video controls>
+        <video controls preload="none">
           <source src="https://1518216049.vod-qcloud.com/9c54cdefvodtranscq1518216049/793bc1655001834825774478034/v.f100840.mp4" type="video/mp4">
         </video>
       </div>
@@ -773,10 +778,19 @@ ul,ol{list-style:none}
       <div class="dsec-body"><p>短视频创意制作课程作业，基于当时非常喜爱的一部番剧《彻夜之歌》PV内容的 CG 版二创。</p></div>
     </section>
 
+    <!-- CG版PV素材和分镜：封面+1到8 -->
     <section class="dsec">
       <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">工作流截图</h2></div>
-      <div class="story-grid" style="grid-template-columns: 1fr;">
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/26/9bc93740192a58aa51b5a4ff066299c8.png" loading="lazy" alt="工作流截图"></div>
+      <div class="story-grid">
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pvfm.png" loading="lazy" alt="封面"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pv1.png" loading="lazy" alt="图1"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pv2.png" loading="lazy" alt="图2"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pv3.png" loading="lazy" alt="图3"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pv4.png" loading="lazy" alt="图4"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pv5.png" loading="lazy" alt="图5"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pv6.png" loading="lazy" alt="图6"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pv7.png" loading="lazy" alt="图7"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/pv/pv8.png" loading="lazy" alt="图8"></div>
       </div>
     </section>
 
@@ -788,7 +802,7 @@ ul,ol{list-style:none}
   </div>
 </main>
 
-<!-- ===================== 详情页 03：AI动画打斗试验作 ===================== -->
+<!-- ===================== 详情页 03：AI动画打斗试验作 (对应 dadou 文件夹) ===================== -->
 <main id="view-project-experiment" class="view">
   <div class="detail">
     <a class="back" href="#/home"><span>←</span> 返回作品</a>
@@ -803,7 +817,7 @@ ul,ol{list-style:none}
 
     <div class="video-stage">
       <div class="ratio">
-        <video controls>
+        <video controls preload="none">
           <source src="https://1518216049.vod-qcloud.com/9c54cdefvodtranscq1518216049/78f36c855001834825774438362/v.f100840.mp4" type="video/mp4">
         </video>
       </div>
@@ -814,12 +828,13 @@ ul,ol{list-style:none}
       <div class="dsec-body"><p>基于Seedance2.5、wan3.0，因对Re0原作的打斗演出效果不满意，于是自己动手尝试制作，并且试验Seedance性能。</p></div>
     </section>
 
+    <!-- 打斗试验作素材：dadou 文件夹的 ddfm, dd, dd2 -->
     <section class="dsec">
-      <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">工作流截图</h2></div>
+      <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">角色图展示</h2></div>
       <div class="story-grid">
-        <div class="story-item landscape" style="grid-column: span 3; aspect-ratio: 21/9;">
-          <img src="https://i.imgs.ovh/2026/10/27/89ee96996a44fe4bf74d497f5a7433b3.png" loading="lazy" alt="工作流截图">
-        </div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/dadou/ddfm.png" loading="lazy" alt="封面"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/dadou/dd.png" loading="lazy" alt="图1"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/dadou/dd2.png" loading="lazy" alt="图2"></div>
       </div>
     </section>
 
@@ -838,7 +853,7 @@ ul,ol{list-style:none}
   </div>
 </main>
 
-<!-- ===================== 详情页 04：AI萌系动画 ===================== -->
+<!-- ===================== 详情页 04：AI萌系动画 (对应 mx 文件夹，包含5个小单集) ===================== -->
 <main id="view-project-tvc" class="view">
   <div class="detail">
     <a class="back" href="#/home"><span>←</span> 返回作品</a>
@@ -853,7 +868,7 @@ ul,ol{list-style:none}
 
     <div class="video-stage">
       <div class="ratio">
-        <video controls id="moe-video-player">
+        <video controls id="moe-video-player" preload="none">
           <source src="https://1518216049.vod-qcloud.com/9c54cdefvodtranscq1518216049/d50a12eb5001834825843186596/v.f100800.mp4" type="video/mp4" id="moe-video-source">
         </video>
       </div>
@@ -872,20 +887,20 @@ ul,ol{list-style:none}
       <div class="dsec-body"><p>咕咕嘎嘎、菲比、Doro、弗糯糯的小日常。</p></div>
     </section>
 
+    <!-- 萌系动画素材：mx 文件夹的封面和1-9 -->
     <section class="dsec">
-      <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">角色图展示</h2></div>
+      <div class="dsec-head"><span class="dsec-num">02</span><h2 class="dsec-title">工作流截图</h2></div>
       <div class="story-grid">
-        <div class="story-item landscape">
-          <img src="https://i.imgs.ovh/2026/10/27/d2e75f91510b595663a927513cb956b3.png" loading="lazy" alt="工作流截图">
-        </div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/b10603142c45836980cf44308f314969.png" loading="lazy" alt="角色图1"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/7e14d9d2b31143b2ea299f8b51fe6fd8.png" loading="lazy" alt="角色图2"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/f50d8f0acaedaad667aad43d94262c15.png" loading="lazy" alt="角色图3"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/f1c7bc83a1da1d80f8f6d19db8251576.jpg" loading="lazy" alt="角色图4"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/ab17f84ff73df8965b97013d634b0504.jpg" loading="lazy" alt="角色图5"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/0951ad4fb5c28ec6fc29fa29a53d9a74.jpg" loading="lazy" alt="角色图6"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/a8c29ef906dbafba590f726a0d571729.jpg" loading="lazy" alt="角色图7"></div>
-        <div class="story-item landscape"><img src="https://i.imgs.ovh/2026/10/28/44a14af8dca36c73c2d24fe1f57849f6.png" loading="lazy" alt="角色图8"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mxfm.png" loading="lazy" alt="封面"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mx1.png" loading="lazy" alt="图1"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mx2.png" loading="lazy" alt="图2"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mx3.png" loading="lazy" alt="图3"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mx4.png" loading="lazy" alt="图4"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mx5.png" loading="lazy" alt="图5"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mx6.png" loading="lazy" alt="图6"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mx7.png" loading="lazy" alt="图7"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mx8.png" loading="lazy" alt="图8"></div>
+        <div class="story-item landscape"><img src="https://zuopinji-1518216049.cos.ap-guangzhou.myqcloud.com/mx/mx9.png" loading="lazy" alt="图9"></div>
       </div>
     </section>
 
@@ -913,7 +928,6 @@ ul,ol{list-style:none}
           </div>
           <div class="about-block" style="margin-top:26px">
             <h3>工作流</h3>
-            <!-- 优化后的求职表达 -->
             <p>能独立胜任 AIGC 视频的全流程角色，涵盖：创意与分镜、提示词设计、AI 素材生成、镜头筛选整合、成片剪辑与节奏。熟练掌握 AIGC 生产工具流与无限画布工作方式，同步跟进 Sora、Workbuddy 等新工具。</p>
           </div>
         </div>
@@ -971,8 +985,15 @@ function switchVideo(url, btn) {
     if (hash === '#/about') return 'about';
     return 'home';
   }
+  
   function route(){
     const id = resolveRoute();
+    
+    // 离开页面时，强制暂停所有正在播放的视频
+    document.querySelectorAll('video').forEach(function(v){
+      v.pause();
+    });
+
     document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
     var el = document.getElementById('view-' + id);
     if (el){ el.classList.add('active'); }
@@ -985,6 +1006,7 @@ function switchVideo(url, btn) {
       a.classList.toggle('on', on);
     });
   }
+  
   window.addEventListener('hashchange', route);
 
   var contactLink = document.querySelector('.nav-links a[data-nav="contact"]');
@@ -999,7 +1021,7 @@ function switchVideo(url, btn) {
 
   route();
 
-  // ===== 增强版灯箱功能（支持双击放大任意位置） =====
+  // ===== 增强版灯箱功能 =====
   var lightbox = document.getElementById('lightbox');
   var lightboxImg = document.getElementById('lightbox-img');
   var lightboxClose = document.getElementById('lightbox-close');
@@ -1011,7 +1033,6 @@ function switchVideo(url, btn) {
   var isDragging = false;
   var startX = 0;
   var startY = 0;
-  var mouseDownTime = 0;
   var movedDistance = 0;
 
   // 打开灯箱
@@ -1046,15 +1067,13 @@ function switchVideo(url, btn) {
   lightboxImg.addEventListener('dblclick', function(e) {
     e.stopPropagation();
     if (scale > 1.1) {
-      // 已经是放大状态，双击还原
       resetTransform();
     } else {
-      // 正常状态，双击放大
       var rect = lightboxImg.getBoundingClientRect();
       var x = e.clientX - rect.left;
       var y = e.clientY - rect.top;
       
-      scale = 2.5; // 放大 2.5 倍
+      scale = 2.5; 
       translateX = -(x * (scale - 1));
       translateY = -(y * (scale - 1));
       
@@ -1081,7 +1100,7 @@ function switchVideo(url, btn) {
     startX = e.clientX - translateX;
     startY = e.clientY - translateY;
     lightboxImg.style.cursor = 'grabbing';
-    lightboxImg.style.transition = 'none'; // 拖拽时去掉过渡动画，防止卡顿
+    lightboxImg.style.transition = 'none'; 
   });
 
   window.addEventListener('mousemove', function(e) {
@@ -1100,11 +1119,11 @@ function switchVideo(url, btn) {
     if (isDragging) {
       isDragging = false;
       lightboxImg.style.cursor = 'grab';
-      lightboxImg.style.transition = 'transform 0.2s ease-out'; // 恢复过渡动画
+      lightboxImg.style.transition = 'transform 0.2s ease-out'; 
     }
   });
 
-  // 点击背景关闭（如果点击时移动距离极小，才认为是单击）
+  // 点击背景关闭
   lightbox.addEventListener('click', function(e) {
     if (movedDistance < 5) {
       closeLightbox();
